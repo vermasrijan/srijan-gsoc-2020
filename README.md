@@ -12,6 +12,7 @@ Federated Learning tool for bridging the gap between Healthcare providers and re
 * [Option 2: Pip](#option-2-pip)
 * [Option 3: Docker](#option-3-docker)
 - [Instructions](#instructions)
+- [Acknowledgements](#acknowledgements)
 
 ## Requirements
 
@@ -25,7 +26,7 @@ Support for GPU to be added later.
 The easiest way to install the `hrc` dependencies is via conda. Here are the steps:
 
 1. Install Miniconda from [https://conda.io/miniconda.html](https://conda.io/miniconda.html)
-2. git clone https://github.com/vermasrijan/srijan-gsoc-2020.git
+2. `git clone https://github.com/vermasrijan/srijan-gsoc-2020.git`
 3. `cd /path/to/srijan-gsoc-2020`
 4. `conda env create -f environment.yml`
 5. `conda activate hrc` (or `source activate hrc` for older versions of conda)
@@ -53,5 +54,16 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
 ### Option 1: Client Side:
 
 1. 
+
+## Acknowledgements
+1. I would like to thank all my mentors for taking the time to mentor me and for their invaluable suggestions throughout. I truly appreciate their constant trust and encouragement!<br/>
+
+2. [Open Bioinformatics Foundation](https://www.open-bio.org/) admins, helpdesk and the whole community <br/>
+
+3. [Systems Biology of Aging Group](http://www.aging-research.group/) <br/>
+
+4. [Iterative.ai](https://iterative.ai/) and [DVC](https://dvc.org/) <br/>
+
+5. [GSoC](https://summerofcode.withgoogle.com/) organizers, managers and Google 
 
 
