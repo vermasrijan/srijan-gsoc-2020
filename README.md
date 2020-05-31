@@ -25,7 +25,7 @@ Support for GPU to be added later.
 
 The easiest way to install the `hrc` dependencies is via conda. Here are the steps:
 
-1. Install Miniconda from [https://conda.io/miniconda.html](https://conda.io/miniconda.html)
+1. Install Miniconda, for your operating system, from [https://conda.io/miniconda.html](https://conda.io/miniconda.html)
 2. `git clone https://github.com/vermasrijan/srijan-gsoc-2020.git`
 3. `cd /path/to/srijan-gsoc-2020`
 4. `conda env create -f environment.yml`
@@ -38,8 +38,10 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
 <to_be_added>
 
 ## Instructions
-1. For testing purposes, you can run the scripts by either mimicking a 'Coordinator' or by mimicking a 'Client'.
-2. A toy dataset (MNIST images) has been splitted equally amongst 5 'clients'.
+1. For testing purposes, you can run the scripts by either mimicking a `Coordinator` or by mimicking a `Client`.
+2. Specifications of the dataset - 
+2.a) A toy dataset (MNIST images) has been splitted equally amongst `5 Clients`.
+2.b) 
 3. Directory structure: 
 > **A:** Because you don't want to test the code, you want to test the *program*.
 
