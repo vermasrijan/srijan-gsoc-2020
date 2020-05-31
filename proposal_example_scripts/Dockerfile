@@ -1,5 +1,5 @@
 
-########################< Docker File >########################
+########################< Example Docker File >########################
 FROM vermasrijan/tf-dvc:latest
 
 RUN apt update && apt upgrade

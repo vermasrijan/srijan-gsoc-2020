@@ -1,0 +1,18 @@
+{
+    "round_1_results": {
+        "global_acc": 0.937,
+        "global_loss": 1.563
+    },
+    "round_2_results": {
+        "global_acc": 0.935,
+        "global_loss": 1.562
+    },
+    "round_3_results": {
+        "global_acc": 0.935,
+        "global_loss": 1.562
+    },
+    "round_4_results": {
+        "global_acc": 0.935,
+        "global_loss": 1.565
+    }
+}
