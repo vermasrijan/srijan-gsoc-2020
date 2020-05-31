@@ -39,10 +39,7 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
 
 ## Instructions
 1. For testing purposes, you can run the scripts by either mimicking a `Coordinator` or by mimicking a `Client`.
-2. Specifications of the dataset - 
-2.a) A toy dataset (MNIST images) has been splitted equally amongst `5 Clients`.
-2.b) 
-3. Directory structure: 
+2. Directory structure: 
 > **A:** Because you don't want to test the code, you want to test the *program*.
 
 .
@@ -52,6 +49,14 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
 │   ├── integration         # End-to-end, integration tests (alternatively `e2e`)
 │   └── unit                # Unit tests
 └── ...
+
+3. Specifications of the dataset - 
+- A toy dataset (MNIST images) has been splitted equally amongst `5 Clients`.
+- Total Images = 42,000 
+- Total Labels = 10 (from `0` to `9`)
+- Train : Test = 9 : 1
+- Total images amongst each `Client` = 7,560.
+- Data has been preprocessed and is being stored in `./clients/c*/l1/` directory.
 
 ### Option 1: Client Side:
 
