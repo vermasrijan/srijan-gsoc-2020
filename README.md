@@ -8,9 +8,9 @@ Federated Learning tool for bridging the gap between Healthcare providers and re
 
 - [Requirements](#requirements)
 - [Installation](#installation)
-* [Option 1: Conda](#option-1-conda)
-* [Option 2: Pip](#option-2-pip)
-* [Option 3: Docker](#option-3-docker)
+  * [Option 1: Conda](#option-1-conda)
+  * [Option 2: Pip](#option-2-pip)
+  * [Option 3: Docker](#option-3-docker)
 - [Instructions](#instructions)
 - [Acknowledgements](#acknowledgements)
 
