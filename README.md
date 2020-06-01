@@ -7,8 +7,9 @@ Federated Learning tool for bridging the gap between Healthcare providers and re
 
 <!---
 Below is the FL workflow. Uncomment out if necessary
-<img src="./images_other/dvc_fl_github_with_commands.png" />
 -->
+<img src="./images_other/dvc_fl_github_with_commands.png" />
+
 
 ## Table of Contents
 
@@ -185,6 +186,7 @@ python local_train.py -h
 1. Add separate branch for unbalanced FL (`supervised learning`)
 2. Add different datasets
 3. Add input for taking different ML models as input, in `local_train.py` script.
+4. Add more commands using dvc.
 4. <ADD_MORE>
 
 
