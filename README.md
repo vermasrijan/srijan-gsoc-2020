@@ -94,12 +94,21 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
 
 ### Option 1: Client Side
 - After local training is done, a metadata file (`json format`) having individual sample number will be stored. 
-1. Input - 
-2. Output - 
+1. Input - `<Global_model_path>, <Path_to_save_client_model>, <Client Dataset>` 
+2. Output - `<local_model_weights>, <local_model_metadata_file>`
+3. Commands:
+- Local training for one client:  `python local_train.py --global_model_path ./coordinator/g1/ --local_model_path ./clients/c1/l1/ --local_dataset_path ./clients/c1/l1/train_data.pkl --metadata_path ./clients/c1/l1/metadata.json`
+OR
+- For testing purposes, training for all clients can happen with a single command: `bash run_local_train_all.sh`
+OR
+- Track commands and files using dvc : 
+`dvc init`
+`dvc run -f 'local_train.dvc' -d ./clients/c1/l1/train_data.pkl -o ./clients/c1/l1/metadata.json python local_train.py --global_model_path ./coordinator/g1/ --local_model_path ./clients/c1/l1/ --local_dataset_path ./clients/c1/l1/train_data.pkl --metadata_path ./clients/c1/l1/metadata.json`
+OR
 
 ### Option 2: Coordinator Side
-1. Input - 
-2. Output - 
+1. Input - `<Global_model_path>, <Path_to_test_data>, <Clients Dir>`
+2. Output - `<Global model Metadata_file>, <updated_global_model>`
 
 ## Research papers / References
 #### Some of the papers which have been published in the similar domain are given below: <br/>
