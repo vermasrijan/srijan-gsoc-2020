@@ -120,6 +120,15 @@ dvc run -f 'local_train.dvc' -d ./clients 'bash run_local_train_all.sh'
 - For tracking individual files - <br/> 
 `dvc add <file_name>`
 
+- Commit and push files:
+```
+git add <file_names>
+dvc commit
+git commit -m <Message>
+dvc push
+git push
+```
+
 ### Option 2: Coordinator Side
 1. Input - `<Global_model_path>, <Path_to_test_data>, <Clients Dir>`
 2. Output - `<Global model Metadata_file>, <updated_global_model>`
@@ -143,9 +152,16 @@ OR <br/>
 ```
 dvc run -f 'global_train.dvc' -d ./coordinator/g1/ 'bash run_fed_av_algo.sh'
 ```
-
+- Commit and push files:
+```
+git add <file_names>
+dvc commit
+git commit -m <Message>
+dvc push
+git push
+```
 ### Help
-- For more info. on dvc and the script:
+- For more info. on dvc and the scripts:
 ```
 dvc -h
 python local_train.py -h
