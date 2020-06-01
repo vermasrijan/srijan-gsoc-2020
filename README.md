@@ -108,15 +108,14 @@ bash run_local_train_all.sh
 ``` 
 OR <br/>
 - Track commands and files using dvc : <br/>
-`dvc init` <br/>
 ```
+dvc init
 dvc run -f 'local_train.dvc' -d ./clients/c1/l1/train_data.pkl -o ./clients/c1/l1/metadata.json python local_train.py --global_model_path ./coordinator/g1/ --local_model_path ./clients/c1/l1/ --local_dataset_path ./clients/c1/l1/train_data.pkl --metadata_path ./clients/c1/l1/metadata.json
 ```
 OR <br/>
 ```
-dvc run run_local_train_all.sh
+dvc run 'bash run_local_train_all.sh'
 ```
-<br/>
 
 ### Option 2: Coordinator Side
 1. Input - `<Global_model_path>, <Path_to_test_data>, <Clients Dir>`
