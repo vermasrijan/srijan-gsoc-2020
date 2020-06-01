@@ -1,0 +1,4 @@
+md5: 32d6b21424df0ddfbc4884aec82c8be2
+cmd: python local_train.py --global_model_path ./coordinator/g1/ --local_model_path
+  ./clients/c1/l1/ --local_dataset_path ./clients/c1/l1/train_data.pkl --metadata_path
+  ./clients/c1/l1/metadata.json
