@@ -100,7 +100,9 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
 
 ## Research papers / References
 #### Some of the papers which have been published in the similar domain are given below: <br/>
-1. []()<br/>
+1. [Communication-Efficient Learning of Deep Networks from Decentralized Data](https://arxiv.org/abs/1602.05629)<br/>
+2. [Private Machine Learning in TensorFlow using Secure Computation](https://arxiv.org/abs/1810.08130)<br/>
+3. [Homomorphically encrypted data can support real-time learning in personalized cancer medicine](https://bmcmedinformdecismak.biomedcentral.com/articles/10.1186/s12911-019-0983-9)<br/>
 
 ## GSoC Blogs
 <TO_BE_ADDED>
