@@ -5,7 +5,10 @@ Federated Learning tool for bridging the gap between Healthcare providers and re
 
 ![](https://blog.openmined.org/content/images/2019/10/PySyft-tensorflow-gif-v2.gif)
 
+<!---
+Below is the FL workflow. Uncomment out if necessary
 <img src="./images_other/dvc_fl_github_with_commands.png" />
+-->
 
 ## Table of Contents
 
