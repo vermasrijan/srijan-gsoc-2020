@@ -12,8 +12,11 @@ Federated Learning tool for bridging the gap between Healthcare providers and re
   * [Option 2: Pip](#option-2-pip)
   * [Option 3: Docker](#option-3-docker)
 - [Initialization](#initialization)
+  * [Background](#background)
   * [Option 1: Client Side](#option-1-client-side)
   * [Option 2: Coordinator Side](#option-2-coordinator-side)
+- [Research papers / References](#research-papers)
+- [GSoC Blogs](#gsoc-blogs)
 - [Acknowledgements](#acknowledgements)
 
 ## Requirements
@@ -75,7 +78,8 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
 - Total Images = 42,000 
 - Total Labels = 10 (from `0` to `9`)
 - Train : Test = 9 : 1
-- Total images amongst each `Client` = 7,560.
+- Total training samples (images) amongst each `Client` = 7,560.
+- Total Test samples = 4,200. 
 - Data has been preprocessed and is being stored in `./clients/c*/l1/` directory.
 
 4. Specifications of the `global model` -
@@ -92,6 +96,15 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
 ### Option 2: Coordinator Side
 1. Input - 
 2. Output - 
+
+## Research papers / References
+#### Some of the papers which have been published in the similar domain are given below: <br/>
+1. []()<br/>
+
+## GSoC Blogs
+<TO_BE_ADDED>
+
+
 
 ## Acknowledgements
 1. I would like to thank all my mentors for taking the time to mentor me and for their invaluable suggestions throughout. I truly appreciate their constant trust and encouragement!<br/>
