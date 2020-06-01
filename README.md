@@ -3,7 +3,9 @@ Federated Learning tool for bridging the gap between Healthcare providers and re
 
 ### Mentors : [Anton Kulaga](https://www.linkedin.com/in/antonkulaga/?originalSubdomain=ro), [Ivan Shcheklein](https://www.linkedin.com/in/shcheklein/), [Dmitry Petrov](https://www.linkedin.com/in/dmitryleopetrov/), [Vladyslava Tyshchenko](https://www.linkedin.com/in/vladyslava-tyshchenko-296742125/?originalSubdomain=ua), [Dmitry Nowicki]()<br/><br/>
 
-<img src="./images_other/dvc_fl_github_with_commands.png" />
+![](https://blog.openmined.org/content/images/2019/10/PySyft-tensorflow-gif-v2.gif)
+
+<img src="./images_other/dvc_fl_github_with_commands.png" width="500" height="700" />
 
 ## Table of Contents
 
@@ -104,7 +106,7 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
 1. [Communication-Efficient Learning of Deep Networks from Decentralized Data](https://arxiv.org/abs/1602.05629)<br/>
 2. [Private Machine Learning in TensorFlow using Secure Computation](https://arxiv.org/abs/1810.08130)<br/>
 3. [Homomorphically encrypted data can support real-time learning in personalized cancer medicine](https://bmcmedinformdecismak.biomedcentral.com/articles/10.1186/s12911-019-0983-9)<br/>
-4. [Secure and Private AI, Udacity](https://www.udacity.com/course/secure-and-private-ai--ud185)
+4. [Secure and Private AI - online course, Udacity](https://www.udacity.com/course/secure-and-private-ai--ud185)
 
 ## GSoC Blogs
 <TO_BE_ADDED>
