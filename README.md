@@ -97,14 +97,15 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
 1. Input - `<Global_model_path>, <Path_to_save_client_model>, <Client Dataset>` 
 2. Output - `<local_model_weights>, <local_model_metadata_file>`
 3. Commands:
-- Local training for one client:  `python local_train.py --global_model_path ./coordinator/g1/ --local_model_path ./clients/c1/l1/ --local_dataset_path ./clients/c1/l1/train_data.pkl --metadata_path ./clients/c1/l1/metadata.json`
-OR
-- For testing purposes, training for all clients can happen with a single command: `bash run_local_train_all.sh`
-OR
-- Track commands and files using dvc : 
-`dvc init`
-`dvc run -f 'local_train.dvc' -d ./clients/c1/l1/train_data.pkl -o ./clients/c1/l1/metadata.json python local_train.py --global_model_path ./coordinator/g1/ --local_model_path ./clients/c1/l1/ --local_dataset_path ./clients/c1/l1/train_data.pkl --metadata_path ./clients/c1/l1/metadata.json`
-OR
+- Local training for one client:  `python local_train.py --global_model_path ./coordinator/g1/ --local_model_path ./clients/c1/l1/ --local_dataset_path ./clients/c1/l1/train_data.pkl --metadata_path ./clients/c1/l1/metadata.json` <br/>
+OR <br/>
+- For testing purposes, training for all clients can happen with a single command: `bash run_local_train_all.sh` <br/>
+OR <br/>
+- Track commands and files using dvc : <br/>
+`dvc init` <br/>
+`dvc run -f 'local_train.dvc' -d ./clients/c1/l1/train_data.pkl -o ./clients/c1/l1/metadata.json python local_train.py --global_model_path ./coordinator/g1/ --local_model_path ./clients/c1/l1/ --local_dataset_path ./clients/c1/l1/train_data.pkl --metadata_path ./clients/c1/l1/metadata.json` <br/>
+OR <br/>
+`dvc run run_local_train_all.sh`  <br/>
 
 ### Option 2: Coordinator Side
 1. Input - `<Global_model_path>, <Path_to_test_data>, <Clients Dir>`
