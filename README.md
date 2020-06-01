@@ -37,20 +37,36 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
 ### Option 3: Docker
 <to_be_added>
 
-## Instructions
+## Initialization
+### Background
 1. For testing purposes, you can run the scripts by either mimicking a `Coordinator` or by mimicking a `Client`.
 2. Directory structure: 
-> **A:** Because you don't want to test the code, you want to test the *program*.
 
-.
-├── ...
-├── test                    # Test files (alternatively `spec` or `tests`)
-│   ├── benchmarks          # Load and stress tests
-│   ├── integration         # End-to-end, integration tests (alternatively `e2e`)
-│   └── unit                # Unit tests
-└── ...
+> 
+    .
+    ├── ...
+    ├── coordinator                     # Who applies federated averaging algorithm / encryption on local models
+    │   ├── g1                          # Initialized Global model 1, for a specific dataset (`supervised learning`)
+    │   ├── g2                          # Initialized Global model 2, for a specific dataset (`unsupervised learning`) <TO_BE_ADDED>
+    │   └── g3    
+    |   └── ...                         
+    ├── clients                         # Where local training takes place
+    │   ├── c1                          # `Client 1` participating in FL workflow
+    |   |   ├── l1                      # `l1` is mapped with `g1`. Data specific to `g1` model is trained here, locally
+    |   |   ├── l2                      # `l2` is mapped with `g2`. Data specific to `g2` model is trained here, locally
+    |   |   └── ...                     
+    │   ├── c2                          # `Client 2` participating in FL workflow
+    |   |   ├── l1                      
+    |   |   ├── l2
+    |   |   └── ...                     
+    │   ├── c3                          # `Client 3` participating in FL workflow
+    |   |   ├── l1                      
+    |   |   ├── l2
+    |   |   └── ...    
+    |   └── ...                         
+    └── ...
 
-3. Specifications of the dataset - 
+3. Specifications of the dataset [Only for simulations. In real scenario, data will NOT be stored in this repository] - 
 - A toy dataset (MNIST images) has been splitted equally amongst `5 Clients`.
 - Total Images = 42,000 
 - Total Labels = 10 (from `0` to `9`)
@@ -58,9 +74,20 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
 - Total images amongst each `Client` = 7,560.
 - Data has been preprocessed and is being stored in `./clients/c*/l1/` directory.
 
-### Option 1: Client Side:
+4. Specifications of the `global model` -
+- 4 layers MLP model
+- Input layer dimension = `(784, )`
+- Total 2 hidden layers, `200 neurons` each.
+- Output layer dimension = `(10,1)`, for predicting 1/10 labels
 
-1. 
+### Option 1- Client Side:
+- After local training is done, a metadata file (`json format`) having individual sample number will be stored. 
+1. Input - 
+2. Output - 
+
+### Option 2- Coordinator Side:
+1. Input - 
+2. Output - 
 
 ## Acknowledgements
 1. I would like to thank all my mentors for taking the time to mentor me and for their invaluable suggestions throughout. I truly appreciate their constant trust and encouragement!<br/>
