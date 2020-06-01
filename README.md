@@ -16,8 +16,9 @@ Federated Learning tool for bridging the gap between Healthcare providers and re
   * [Background](#background)
   * [Option 1: Client Side](#option-1-client-side)
   * [Option 2: Coordinator Side](#option-2-coordinator-side)
-- [Research papers / References](#research-papers)
+- [Research papers / References](#research-papers--references)
 - [GSoC Blogs](#gsoc-blogs)
+- [TODO Next](#todo-next)
 - [Acknowledgements](#acknowledgements)
 
 ## Requirements
@@ -46,7 +47,7 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
 ## Initialization
 ### Background
 1. For testing purposes, you can run the scripts by either mimicking a `Coordinator` or by mimicking a `Client`.
-2. Directory structure: 
+2. Repository structure: 
 
 > 
     .
@@ -85,9 +86,9 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
 
 4. Specifications of the `global model` -
 - 4 layers MLP model
-- Input layer dimension = `(784, )`
+- Input layer dimension, for a `28X28` image = `(784, )`
 - Total 2 hidden layers, `200 neurons` each.
-- Output layer dimension = `(10,1)`, for predicting 1/10 labels
+- Output layer dimension = `(10,1)`, for predicting 1 of the 10 labels
 
 ### Option 1: Client Side
 - After local training is done, a metadata file (`json format`) having individual sample number will be stored. 
@@ -103,10 +104,16 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
 1. [Communication-Efficient Learning of Deep Networks from Decentralized Data](https://arxiv.org/abs/1602.05629)<br/>
 2. [Private Machine Learning in TensorFlow using Secure Computation](https://arxiv.org/abs/1810.08130)<br/>
 3. [Homomorphically encrypted data can support real-time learning in personalized cancer medicine](https://bmcmedinformdecismak.biomedcentral.com/articles/10.1186/s12911-019-0983-9)<br/>
+4. [Secure and Private AI, Udacity](https://www.udacity.com/course/secure-and-private-ai--ud185)
 
 ## GSoC Blogs
 <TO_BE_ADDED>
 
+## TODO Next
+1. Add separate branch for unbalanced FL (`supervised learning`)
+2. Add different datasets
+3. Add input for taking different ML models as input, in `local_train.py` script.
+4. <ADD_MORE>
 
 
 ## Acknowledgements
