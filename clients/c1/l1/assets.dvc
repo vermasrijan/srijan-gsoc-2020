@@ -1,0 +1,7 @@
+md5: 4fdab7cf42813cc3a0f8b706eb39b7ed
+outs:
+- md5: d751713988987e9331980363e24189ce.dir
+  path: assets
+  cache: true
+  metric: false
+  persist: false
