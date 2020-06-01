@@ -3,7 +3,7 @@ Federated Learning tool for bridging the gap between Healthcare providers and re
 
 ### Mentors : [Anton Kulaga](https://www.linkedin.com/in/antonkulaga/?originalSubdomain=ro), [Ivan Shcheklein](https://www.linkedin.com/in/shcheklein/), [Dmitry Petrov](https://www.linkedin.com/in/dmitryleopetrov/), [Vladyslava Tyshchenko](https://www.linkedin.com/in/vladyslava-tyshchenko-296742125/?originalSubdomain=ua), [Dmitry Nowicki]()<br/><br/>
 
-<img src="./images_other/dvc_fl_github_with_commands.png" width="600" height="300" />
+<img src="./images_other/dvc_fl_github_with_commands.png" />
 
 ## Table of Contents
 
