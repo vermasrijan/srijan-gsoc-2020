@@ -11,7 +11,9 @@ Federated Learning tool for bridging the gap between Healthcare providers and re
   * [Option 1: Conda](#option-1-conda)
   * [Option 2: Pip](#option-2-pip)
   * [Option 3: Docker](#option-3-docker)
-- [Instructions](#instructions)
+- [Initialization](#initialization)
+  * [Option 1: Client Side](#option-1-client-side)
+  * [Option 2: Coordinator Side](#option-2-coordinator-side)
 - [Acknowledgements](#acknowledgements)
 
 ## Requirements
@@ -63,7 +65,9 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
     |   |   ├── l1                      
     |   |   ├── l2
     |   |   └── ...    
-    |   └── ...                         
+    |   └── ...  
+    ├── local_train.py                  # To be executed at `client` side
+    ├── fed_av_algo.py                  # To be executed at `coordinator` side
     └── ...
 
 3. Specifications of the dataset [Only for simulations. In real scenario, data will NOT be stored in this repository] - 
@@ -80,12 +84,12 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
 - Total 2 hidden layers, `200 neurons` each.
 - Output layer dimension = `(10,1)`, for predicting 1/10 labels
 
-### Option 1- Client Side:
+### Option 1: Client Side
 - After local training is done, a metadata file (`json format`) having individual sample number will be stored. 
 1. Input - 
 2. Output - 
 
-### Option 2- Coordinator Side:
+### Option 2: Coordinator Side
 1. Input - 
 2. Output - 
 
