@@ -97,7 +97,7 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
 1. Input - `<Global_model_path>, <Path_to_save_client_model>, <Client Dataset>` 
 2. Output - `<local_model_weights>, <local_model_metadata_file>`
 3. Commands:
-- Local training for one client:  
+* Local training for one client:  
 ```
 python local_train.py --global_model_path ./coordinator/g1/ --local_model_path ./clients/c1/l1/ --local_dataset_path ./clients/c1/l1/train_data.pkl --metadata_path ./clients/c1/l1/metadata.json
 ```
