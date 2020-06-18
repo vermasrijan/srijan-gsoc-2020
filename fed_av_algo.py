@@ -141,7 +141,7 @@ def modify_search_args(args: Namespace):
     for(X_test, Y_test) in test_batched:
         global_acc, global_loss = test_model(X_test, Y_test, global_model, comm_round)
 
-    #Save metadata in dict
+    #Save metrics in dict
     glob_mod_metadata['round_{}_results'.format(comm_round)] = {'global_acc': global_acc, 'global_loss': global_loss}
 
     #Save metrics in metadata
