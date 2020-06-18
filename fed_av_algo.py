@@ -148,6 +148,12 @@ def modify_search_args(args: Namespace):
     with open(args.metadata_path, 'w') as f:
         json.dump(glob_mod_metadata, f, indent=4)
 
+    #Save hyperparameter / config in dict
+    glob_mod_config = dict()
+    glob_mod_config['round_{}_config'.format(comm_round)] = {'global_acc': global_model.to_json()}
+    with open(args.global_model_path + '/global_mod_config.json', 'w') as f:
+        json.dump(glob_mod_config, f, indent=4)
+
 def add_search_args(parser: ArgumentParser):
     """
     Adds searching arguments to an ArgumentParser.
