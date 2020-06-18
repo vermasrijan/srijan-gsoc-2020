@@ -190,7 +190,7 @@ python local_train.py -h
 ## GSoC Blogs
 <TO_BE_ADDED>
 
-## TODO Next
+## TODO Next (REFER ISSUES PAGE!)
 1. Add separate branch for unbalanced FL (`supervised learning`)
 2. Add different datasets
 3. Add input for taking different ML models as input, in `local_train.py` script.
