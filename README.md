@@ -139,7 +139,7 @@ git push
 3. Commands:
 - Averaging client models:
 ```
-python fed_av_algo.py --global_model_path ./coordinator/g1/ --test_dataset_path coordinator/g1/ --client_dir ./clients --metadata_path coordinator/g1/global_mod_metadata.json
+python fed_av_algo.py --global_model_path ./coordinator/g1/ --test_dataset_path coordinator/g1/ --client_dir ./clients --metadata_path coordinator/g1
 ```
 OR <br/>
 - Using bash:
@@ -147,10 +147,18 @@ OR <br/>
 bash run_fed_av_algo.sh
 ```
 OR <br/>
-- Track commands and files using dvc : <br/>
+- Track commands and stage files using dvc : <br/>
+Define `Global Stage File` => `global_train.dvc` i.e Train Global Model.
 ```
 dvc init
-dvc run -f 'global_train.dvc' -d ./coordinator/g1/ -o coordinator/g1/global_mod_metadata.json python fed_av_algo.py --global_model_path ./coordinator/g1/ --test_dataset_path coordinator/g1/ --client_dir ./clients --metadata_path coordinator/g1/global_mod_metadata.json
+dvc run -f 'global_train.dvc' \
+-d ./coordinator/g1/saved_model.pb \
+-d fed_av_algo.py \
+-o coordinator/g1/global_mod_config.json \
+-M coordinator/g1/metrics.json \
+python fed_av_algo.py --global_model_path \
+./coordinator/g1/ --test_dataset_path coordinator/g1/ \
+--client_dir ./clients --metadata_path coordinator/g1
 ```
 OR <br/>
 ```
