@@ -129,12 +129,13 @@ def modify_search_args(args: Namespace):
 
     #NOTE: no. of keys in global model metadata file = rounds done till now
     try:
-        with open(args.metadata_path) as f:
+        with open(args.metadata_path + '/metrics.json') as f:
             glob_mod_metadata = json.load(f)
         comm_round = len(glob_mod_metadata.keys()) + 1
 
     except:
         glob_mod_metadata = dict()
+
         comm_round = 1
 
     #test global model and print out metrics after each communications round
@@ -143,9 +144,8 @@ def modify_search_args(args: Namespace):
 
     #Save metrics in dict
     glob_mod_metadata['round_{}_results'.format(comm_round)] = {'global_acc': global_acc, 'global_loss': global_loss}
-
     #Save metrics in metadata
-    with open(args.metadata_path, 'w') as f:
+    with open(args.metadata_path + '/metrics.json', 'w') as f:
         json.dump(glob_mod_metadata, f, indent=4)
 
     #Save hyperparameter / config in dict
@@ -153,6 +153,9 @@ def modify_search_args(args: Namespace):
     glob_mod_config['round_{}_config'.format(comm_round)] = {'global_acc': global_model.to_json()}
     with open(args.global_model_path + '/global_mod_config.json', 'w') as f:
         json.dump(glob_mod_config, f, indent=4)
+
+
+
 
 def add_search_args(parser: ArgumentParser):
     """
@@ -223,5 +226,11 @@ if __name__ == '__main__':
 '''
 Example code:
 $python fed_av_algo.py --global_model_path <Global_model_path> --test_dataset_path <Path_to_test_data> --client_dir <Clients Dir>  --metadata_path <Global model Metadata_file>
-$python fed_av_algo.py --global_model_path ./coordinator/g1/ --test_dataset_path coordinator/g1/ --client_dir ./clients --metadata_path coordinator/g1/global_mod_metadata.json
+$python fed_av_algo.py --global_model_path ./coordinator/g1/ --test_dataset_path coordinator/g1/ --client_dir ./clients --metadata_path coordinator/g1
+$dvc run -f 'global_train.dvc' \
+-d ./coordinator/g1/saved_model.pb \
+-d fed_av_algo.py \
+-o coordinator/g1/global_mod_config.json \
+-M coordinator/g1/metrics.json \
+python fed_av_algo.py --global_model_path ./coordinator/g1/ --test_dataset_path coordinator/g1/ --client_dir ./clients --metadata_path coordinator/g1
 '''
