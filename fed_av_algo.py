@@ -232,5 +232,7 @@ $dvc run -f 'global_train.dvc' \
 -d fed_av_algo.py \
 -o coordinator/g1/global_mod_config.json \
 -M coordinator/g1/metrics.json \
-python fed_av_algo.py --global_model_path ./coordinator/g1/ --test_dataset_path coordinator/g1/ --client_dir ./clients --metadata_path coordinator/g1
+python fed_av_algo.py --global_model_path \
+./coordinator/g1/ --test_dataset_path coordinator/g1/ \
+--client_dir ./clients --metadata_path coordinator/g1
 '''
