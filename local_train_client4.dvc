@@ -1,0 +1,21 @@
+md5: 662dc2bc3fa13db15e37607eab224ddc
+cmd: python local_train.py --global_model_path ./coordinator/g1 --local_model_path
+  ./clients/c4/l1 --local_dataset_path ./clients/c4/l1 --metadata_path ./clients/c4/l1
+deps:
+- md5: 5413b3a12e976f6209611f667cd7cfe9
+  path: coordinator/g1/saved_model.pb
+- md5: 724712c9224448b30fe6b1be9cdb962d
+  path: local_train.py
+- md5: 260ed28322084e74a266f6e891c80059
+  path: clients/c4/l1/train_data.pkl
+outs:
+- md5: 5018010e6a4a3ddaad1f349757a9407c
+  path: clients/c4/l1/saved_model.pb
+  cache: true
+  metric: false
+  persist: false
+- md5: 02048530545dfd3be4d9288506a67db7
+  path: clients/c4/l1/metadata.json
+  cache: true
+  metric: false
+  persist: false
