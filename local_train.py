@@ -48,7 +48,7 @@ def load_model(gobal_model_dir):
 #Load dataset
 def load_data(data_path):
     # Data path currently is a 'pickle file'
-    with open(data_path, 'rb') as f:
+    with open(data_path + '/train_data.pkl', 'rb') as f:
         tr_data = pickle.load(f)
 
     return tr_data
@@ -99,7 +99,7 @@ def save_metadata(raw_data, metadata_path):
 
     meta_dict['total_samples'] = len(raw_data)
 
-    with open(metadata_path, 'w') as f:
+    with open(metadata_path + '/metadata.json', 'w') as f:
         json.dump(meta_dict, f, indent=4)
 
 def modify_search_args(args: Namespace):
@@ -211,5 +211,14 @@ if __name__ == '__main__':
 '''
 Example code:
 $python local_train.py --global_model_path <Global_model_path> --local_model_path <Path_to_save_client_model> --local_dataset_path <Client Dataset>  --metadata_path <Metadata_file>
-$python local_train.py --global_model_path ./coordinator/g1/ --local_model_path ./clients/c1/l1/ --local_dataset_path ./clients/c1/l1/train_data.pkl --metadata_path ./clients/c1/l1/metadata.json
+$python local_train.py --global_model_path ./coordinator/g1 --local_model_path ./clients/c1/l1 --local_dataset_path ./clients/c1/l1 --metadata_path ./clients/c1/l1
+$dvc run -f 'local_train_client1.dvc' \
+ -d ./coordinator/g1/saved_model.pb \
+ -d local_train.py \
+ -d ./clients/c1/l1/train_data.pkl \
+ -o ./clients/c1/l1/saved_model.pb \
+ -o ./clients/c1/l1/metadata.json \
+ python local_train.py --global_model_path ./coordinator/g1 \
+ --local_model_path ./clients/c1/l1 \
+ --local_dataset_path ./clients/c1/l1 --metadata_path ./clients/c1/l1
 '''
