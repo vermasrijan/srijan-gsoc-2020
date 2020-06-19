@@ -104,7 +104,7 @@ The easiest way to install the `hrc` dependencies is via conda. Here are the ste
 3. Commands:
 - Local training for one client:  
 ```
-python local_train.py --global_model_path ./coordinator/g1/ --local_model_path ./clients/c1/l1/ --local_dataset_path ./clients/c1/l1/train_data.pkl --metadata_path ./clients/c1/l1/metadata.json
+python local_train.py --global_model_path ./coordinator/g1 --local_model_path ./clients/c1/l1 --local_dataset_path ./clients/c1/l1 --metadata_path ./clients/c1/l1
 ```
 OR <br/>
 - For testing purposes, training for all clients can happen with a single command: 
@@ -112,10 +112,20 @@ OR <br/>
 bash run_local_train_all.sh
 ``` 
 OR <br/>
-- Track commands and files using dvc : <br/>
-```
-dvc init
-dvc run -f 'local_train.dvc' -d ./clients/c1/l1/train_data.pkl -o ./clients/c1/l1/metadata.json python local_train.py --global_model_path ./coordinator/g1/ --local_model_path ./clients/c1/l1/ --local_dataset_path ./clients/c1/l1/train_data.pkl --metadata_path ./clients/c1/l1/metadata.json
+- Track commands and stage files using dvc : <br/>
+1. Define `Local Stage File` => `local_train_client*.dvc` i.e Train Local Model for specific client.<br/>
+2. Initialize DVC repo => `dvc init`
+3. =>
+```bash 
+dvc run -f 'local_train_client1.dvc' \
+ -d ./coordinator/g1/saved_model.pb \
+ -d local_train.py \
+ -d ./clients/c1/l1/train_data.pkl \
+ -o ./clients/c1/l1/saved_model.pb \
+ -o ./clients/c1/l1/metadata.json \
+ python local_train.py --global_model_path ./coordinator/g1 \
+ --local_model_path ./clients/c1/l1 \
+ --local_dataset_path ./clients/c1/l1 --metadata_path ./clients/c1/l1
 ```
 OR <br/>
 ```
@@ -148,15 +158,16 @@ bash run_fed_av_algo.sh
 ```
 OR <br/>
 - Track commands and stage files using dvc : <br/>
-Define `Global Stage File` => `global_train.dvc` i.e Train Global Model.
-```
-dvc init
+1. Define `Global Stage File` => `global_train.dvc` i.e Train Global Model.<br/>
+2. Initialize DVC repo => `dvc init`
+3. =>
+```bash 
 dvc run -f 'global_train.dvc' \
--d ./coordinator/g1/saved_model.pb \
--d fed_av_algo.py \
--o coordinator/g1/global_mod_config.json \
--M coordinator/g1/metrics.json \
-python fed_av_algo.py --global_model_path \
+ -d ./coordinator/g1/saved_model.pb \
+ -d fed_av_algo.py \
+ -o coordinator/g1/global_mod_config.json \
+ -M coordinator/g1/metrics.json \
+ python fed_av_algo.py --global_model_path \
 ./coordinator/g1/ --test_dataset_path coordinator/g1/ \
 --client_dir ./clients --metadata_path coordinator/g1
 ```
