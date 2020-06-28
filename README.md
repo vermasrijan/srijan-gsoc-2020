@@ -19,7 +19,7 @@
 At the moment, a standard machine with CPUs will work. 
 Support for GPU to be added later.
 
-## Installation & Initialization
+## Installation and Initialization
 ### Option 1: PyGrid
 - Step 1: Install dependencies via conda
     1. Install Miniconda, for your operating system, from [https://conda.io/miniconda.html](https://conda.io/miniconda.html)
@@ -53,7 +53,6 @@ Support for GPU to be added later.
 > Note: The above steps will create node instances in the same machine. For remote execution, make sure that all firewalls are disabled.
     
 ### Option 2: PySyft
-> Note: 
 - Step 1: Install dependencies via conda
     1. Install Miniconda, for your operating system, from [https://conda.io/miniconda.html](https://conda.io/miniconda.html)
     2. `git clone https://github.com/vermasrijan/srijan-gsoc-2020/tree/openmined`
@@ -64,6 +63,8 @@ Support for GPU to be added later.
     1. `Public-Training.ipynb`
     2. `Secure-Model-Serving.ipynb`
     3. `Private-Prediction-Client.ipynb`
+    
+> Note: Notebooks given in the [_Udacity Secure and Private AI_](https://www.udacity.com/course/secure-and-private-ai--ud185) are NOT updated. Instead, follow the example notebooks given [here](https://github.com/OpenMined/PySyft/tree/master/examples/tutorials)
 
 ## Tutorials / References
 1. [OpenMined full stack, well explained here](https://www.youtube.com/watch?v=NJBBE_SN90A)<br/>
