@@ -1,7 +1,7 @@
 # This branch is for OpenMined workflows - 
 
 ### Mentors : [Anton Kulaga](https://www.linkedin.com/in/antonkulaga/?originalSubdomain=ro), [Ivan Shcheklein](https://www.linkedin.com/in/shcheklein/), [Dmitry Petrov](https://www.linkedin.com/in/dmitryleopetrov/), [Vladyslava Tyshchenko](https://www.linkedin.com/in/vladyslava-tyshchenko-296742125/?originalSubdomain=ua), [Dmitry Nowicki]()<br/><br/>
-> NOTE: 
+> __NOTE__: 
 > 1. Notebooks given in this repository have been taken from this [branch](https://github.com/OpenMined/PySyft/tree/master/examples/tutorials) and have been modified.
 > 2. Testing of these notebooks has been done on a MacOS / Linux based system
 ## Table of Contents
@@ -50,7 +50,7 @@ Support for GPU to be added later.
     2. `kill -9 <PID-for-step2>` 
     3. `kill -9 <PID-for-step3>`   
     
-> Note: The above steps will create node instances in the same machine. For remote execution, make sure that all firewalls are disabled.
+> __NOTE__: The above steps will create node instances in the same machine. For remote execution, make sure that all firewalls are disabled.
     
 ### Option 2: PySyft
 - Step 1: Install dependencies via conda
@@ -64,7 +64,7 @@ Support for GPU to be added later.
     2. `Secure-Model-Serving.ipynb`
     3. `Private-Prediction-Client.ipynb`
     
-> Note: Notebooks given in the [_Udacity Secure and Private AI_](https://www.udacity.com/course/secure-and-private-ai--ud185) are NOT updated. Instead, follow the example notebooks given [here](https://github.com/OpenMined/PySyft/tree/master/examples/tutorials)
+> __NOTE__: Notebooks given in the [_Udacity Secure and Private AI_](https://www.udacity.com/course/secure-and-private-ai--ud185) are NOT updated. Instead, follow the example notebooks given [here](https://github.com/OpenMined/PySyft/tree/master/examples/tutorials)
 
 ## Tutorials / References
 1. [OpenMined full stack, well explained here](https://www.youtube.com/watch?v=NJBBE_SN90A)<br/>
