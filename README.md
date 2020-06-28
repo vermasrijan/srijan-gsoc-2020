@@ -40,7 +40,7 @@ Support for GPU to be added later.
     - `python -m gridnode --id=hospital-datacluster --port=3000 --gateway_url=http://localhost:5000 &`
         - You should see the nodes that you added at `localhost:5000/connected-nodes`
         - You can also create more nodes by changing the id and port number
-- Step 4: Run `data_owner` & `model_owner` notebooks _separately_ and *sequentially*:
+- Step 4: Run `data_owner` & `model_owner` notebooks _separately_ and __sequentially__:
     1. Data_owner notebook is `what-is-pygrid-demo_data-owner.ipynb`. This notebook helps in sending the data to a GridNetwork.
     2. Model_owner notebook is `what-is-pygrid-demo_model-owner.ipynb`. This notebook helps in searching the data on a GridNetwork.
 - Step 5: Clean the gateway database
@@ -52,8 +52,14 @@ Support for GPU to be added later.
     
 > Note: The above steps will create node instances in the same machine. For remote execution, make sure to turn off
     
-### Option 1: PySyft
-
+### Option 2: PySyft
+- Step 1: Install dependencies via conda
+    1. Install Miniconda, for your operating system, from [https://conda.io/miniconda.html](https://conda.io/miniconda.html)
+    2. `git clone https://github.com/vermasrijan/srijan-gsoc-2020/tree/openmined`
+    3. `cd /path/to/srijan-gsoc-2020`
+    4. `conda env create -f pysyft-environment.yml`
+    5. `conda activate pysyft` (or `source activate pysyft` for older versions of conda)
+- Step 2: 
 ## Tutorials / References
 1. [OpenMined full stack, well explained here](https://www.youtube.com/watch?v=NJBBE_SN90A)<br/>
 2. [Understanding PyGrid and the use of dynamic FL](https://github.com/OpenMined/Roadmap/blob/master/web_and_mobile_team/projects/dynamic_federated_learning.md)<br/>
