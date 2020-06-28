@@ -1,4 +1,4 @@
-## This branch is for OpenMined workflows - 
+# This branch is for OpenMined workflows - 
 
 ### Mentors : [Anton Kulaga](https://www.linkedin.com/in/antonkulaga/?originalSubdomain=ro), [Ivan Shcheklein](https://www.linkedin.com/in/shcheklein/), [Dmitry Petrov](https://www.linkedin.com/in/dmitryleopetrov/), [Vladyslava Tyshchenko](https://www.linkedin.com/in/vladyslava-tyshchenko-296742125/?originalSubdomain=ua), [Dmitry Nowicki]()<br/><br/>
 > NOTE: 
@@ -7,7 +7,7 @@
 ## Table of Contents
 
 - [Requirements](#requirements)
-- [Installation & Initialization](#installation-&-initialization)
+- [Installation and Initialization](#installation-and-initialization)
   * [Option 1: PyGrid](#option-1-pygrid)
   * [Option 2: PySyft](#option-2-pysyft)
 - [Tutorials / References](#tutorials--references)
@@ -50,16 +50,21 @@ Support for GPU to be added later.
     2. `kill -9 <PID-for-step2>` 
     3. `kill -9 <PID-for-step3>`   
     
-> Note: The above steps will create node instances in the same machine. For remote execution, make sure to turn off
+> Note: The above steps will create node instances in the same machine. For remote execution, make sure that all firewalls are disabled.
     
 ### Option 2: PySyft
+> Note: 
 - Step 1: Install dependencies via conda
     1. Install Miniconda, for your operating system, from [https://conda.io/miniconda.html](https://conda.io/miniconda.html)
     2. `git clone https://github.com/vermasrijan/srijan-gsoc-2020/tree/openmined`
     3. `cd /path/to/srijan-gsoc-2020`
     4. `conda env create -f pysyft-environment.yml`
     5. `conda activate pysyft` (or `source activate pysyft` for older versions of conda)
-- Step 2: 
+- Step 2: Run the following notebooks __sequentially__:
+    1. `Public-Training.ipynb`
+    2. `Secure-Model-Serving.ipynb`
+    3. `Private-Prediction-Client.ipynb`
+
 ## Tutorials / References
 1. [OpenMined full stack, well explained here](https://www.youtube.com/watch?v=NJBBE_SN90A)<br/>
 2. [Understanding PyGrid and the use of dynamic FL](https://github.com/OpenMined/Roadmap/blob/master/web_and_mobile_team/projects/dynamic_federated_learning.md)<br/>
@@ -68,7 +73,7 @@ Support for GPU to be added later.
 5. [What is PyGrid demo](https://blog.openmined.org/what-is-pygrid-demo/)
 
 ## TODO Next
-<to-be-added>
+> TO-BE-ADDED
 
 ## Acknowledgements
 1. I would like to thank all my mentors for taking the time to mentor me and for their invaluable suggestions throughout. I truly appreciate their constant trust and encouragement!<br/>
