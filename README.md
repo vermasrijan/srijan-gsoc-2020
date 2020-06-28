@@ -37,7 +37,7 @@ Support for GPU to be added later.
         - Gateway sqlite database file (`databaseGridNetwork.db`) is created under `PyGridNetwork/gridnetwork`
 - Step 3: Start a grid node on machine B
     1. To start a node instance, go into `PyGridNode` directory & run the following command - 
-    - ```python -m gridnode --id=hospital-datacluster --port=3000 --gateway_url=http://localhost:5000 &```
+    - `python -m gridnode --id=hospital-datacluster --port=3000 --gateway_url=http://localhost:5000 &`
         - You should see the nodes that you added at `localhost:5000/connected-nodes`
         - You can also create more nodes by changing the id and port number
 - Step 4: Run `data_owner` & `model_owner` notebooks _separately_ and __sequentially__:
