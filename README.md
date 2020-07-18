@@ -8,8 +8,8 @@
 
 - [Requirements](#requirements)
 - [Installation and Initialization](#installation-and-initialization)
-  * [Option 1: PyGrid](#option-1-pygrid)
-  * [Option 2: PySyft](#option-2-pysyft)
+  * [Environment 1: PyGrid](#environment-1-pygrid)
+  * [Environment 2: PySyft](#environment-2-pysyft)
 - [Tutorials / References](#tutorials--references)
 - [TODO Next](#todo-next)
 - [Acknowledgements](#acknowledgements)
@@ -20,39 +20,40 @@ At the moment, a standard machine with CPUs will work.
 Support for GPU to be added later.
 
 ## Installation and Initialization
-### Option 1: PyGrid
+### Environment 1: PyGrid
 - Step 1: Install dependencies via conda
     1. Install Miniconda, for your operating system, from [https://conda.io/miniconda.html](https://conda.io/miniconda.html)
     2. `git clone https://github.com/vermasrijan/srijan-gsoc-2020/tree/openmined`
     3. `cd /path/to/srijan-gsoc-2020`
     4. `conda env create -f openmined-environment.yml`
     5. `conda activate openmined` (or `source activate openmined` for older versions of conda)
-6. `bash fetch_grid_stack.sh`
-- Step 2: Start a Gateway on machine A (a.k.a GridNetwork)
+    6. `git submodule update --init` (To add all the submodules)
+- Step 2: Start a Gateway on machine A, a.k.a GridNetwork. If running locally, then execute the below in a new CLI tab.
     1. `cd PyGridNetwork` (That is, go into PyGridNetwork directory, which should be inside `srijan-gsoc-2020`)
-    2. `python run.py &`
+    2. ```python -m gridnetwork --port=5000 --host=localhost --start_local_db```
     - Explanation of the above command -  
-        - `&` executes the script and puts it into a background process
         - You should now be able to see a message - `Open Grid Network`, if you go to `localhost:5000` using a browser.
         - Gateway sqlite database file (`databaseGridNetwork.db`) is created under `PyGridNetwork/gridnetwork`
 - Step 3: Start a grid node on machine B
     1. To start a node instance, go into `PyGridNode` directory & run the following command - 
-    - `python -m gridnode --id=hospital-datacluster --port=3000 --gateway_url=http://localhost:5000 &`
+    - `python -m gridnode --id=h1 --port=3000 --host=localhost --gateway_url=http://localhost:5000`
         - You should see the nodes that you added at `localhost:5000/connected-nodes`
         - You can also create more nodes by changing the id and port number
 - Step 4: Run `data_owner` & `model_owner` notebooks _separately_ and __sequentially__:
-    1. Data_owner notebook is `what-is-pygrid-demo_data-owner.ipynb`. This notebook helps in sending the data to a GridNetwork.
-    2. Model_owner notebook is `what-is-pygrid-demo_model-owner.ipynb`. This notebook helps in searching the data on a GridNetwork.
+    1. Data_owner notebook is `data-owner_client.ipynb`. This notebook helps in sending the data to a GridNetwork.
+        - You'll be able to see all the available tags if you go to `localhost:5000:search-available-tags`
+    2. Model_owner notebook is `model-owner_third-party.ipynb`. This notebook helps in searching the data on a GridNetwork.
 - Step 5: Clean the gateway database
     - `rm PyGridNetwork/gridnetwork/databaseGridNetwork.db`
 - Step 6: Closing network ports
-    1. `ps -fA | grep python`
-    2. `kill -9 <PID-for-step2>` 
-    3. `kill -9 <PID-for-step3>`   
+    1. If the processes are not running in background, then you can simply press `Ctrl+C` on CLI, to close the open ports. Else, follow 2-4.
+    2. `ps -fA | grep python`
+    3. `kill -9 <PID-for-step2>` 
+    4. `kill -9 <PID-for-step3>`   
     
 > __NOTE__: The above steps will create node instances in the same machine. For remote execution, make sure that all firewalls are disabled.
     
-### Option 2: PySyft
+### Environment 2: PySyft
 - Step 1: Install dependencies via conda
     1. Install Miniconda, for your operating system, from [https://conda.io/miniconda.html](https://conda.io/miniconda.html)
     2. `git clone https://github.com/vermasrijan/srijan-gsoc-2020/tree/openmined`
