@@ -51,9 +51,10 @@ Support for GPU to be added later.
     5. `cd ..`
     6. `conda env update --name pysyft --file pysyft-environment.yml`
 - Step 2: Run `data_owner` & `model_owner` notebooks _separately_ and __sequentially__:
-    1. Data_owner notebook is `data-owner_client.ipynb`. This notebook helps in sending the data to a GridNetwork.
+    1. Start a notebook by running the following command --> `jupyter notebook`
+    2. Data_owner notebook is `data-owner_client.ipynb`. This notebook helps in sending the data to a GridNetwork.
         - After running the data-owner notebook, you'll be able to see all the available tags if you go to `localhost:5000/search-available-tags`
-    2. Model_owner notebook is `model-owner_third-party.ipynb`. This notebook helps in searching the data on a GridNetwork.
+    3. Model_owner notebook is `model-owner_third-party.ipynb`. This notebook helps in searching the data on a GridNetwork.
 - Step 3: Clean the gateway database
     - `rm PyGridNetwork/gridnetwork/databaseGridNetwork.db`
 - Step 4: Closing network ports
