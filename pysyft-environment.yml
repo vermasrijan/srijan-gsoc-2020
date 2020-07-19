@@ -2,15 +2,12 @@ name: pysyft
 channels:
   - conda
 dependencies:
-  - python=3.7.6
   - ipykernel=5.3.0
-  - ipython=7.15.0
   - pip=20.1.1
   - nb_conda_kernels
   - pip:
-    - 'syft[udacity]'
-    - tf-encrypted==0.5.7
+    - ipywidgets
     - notebook
-    - tornado==6.0.4
+    - tqdm
 
 
