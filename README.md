@@ -23,7 +23,7 @@ Support for GPU to be added later.
 ### Environment 1: PyGrid
 - Step 1: Install dependencies via conda
     1. Install Miniconda, for your operating system, from [https://conda.io/miniconda.html](https://conda.io/miniconda.html)
-    2. `git clone https://github.com/vermasrijan/srijan-gsoc-2020/tree/openmined`
+    2. `git clone https://github.com/vermasrijan/srijan-gsoc-2020.git`
     3. `cd /path/to/srijan-gsoc-2020`
     4. `conda env create -f openmined-environment.yml`
     5. `conda activate openmined` (or `source activate openmined` for older versions of conda)
