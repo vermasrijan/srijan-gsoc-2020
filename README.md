@@ -46,6 +46,7 @@ Support for GPU to be added later.
     1. `conda create -n pysyft python=3.7.4`
     2. `conda activate pysyft` (or `source activate pysyft` for older versions of conda)
     3. `cd PySyft`
+    - Note: PySyft is a git submodule which was installed when following Environment 1 steps
     4. `pip install -e .`
     5. `cd ..`
     6. `conda env update --name pysyft --file pysyft-environment.yml`
