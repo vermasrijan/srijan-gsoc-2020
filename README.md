@@ -62,7 +62,10 @@ Support for GPU to be added later.
     3. `kill -9 <PID-for-env1-step2>` 
     4. `kill -9 <PID-for-env1-step3>`   
     
-> __NOTE__: Notebooks given in the [_Udacity Secure and Private AI_](https://www.udacity.com/course/secure-and-private-ai--ud185) are NOT updated. Instead, follow the example notebooks given [here](https://github.com/OpenMined/PySyft/tree/master/examples/tutorials)
+> __NOTE__: 
+> 1. Notebooks given in the [_Udacity Secure and Private AI_](https://www.udacity.com/course/secure-and-private-ai--ud185) are NOT updated. Instead, follow the example notebooks given [here](https://github.com/OpenMined/PySyft/tree/master/examples/tutorials)
+> 2. Why to have 2 separate environments?
+> - At the time of running these notebooks, PyGrid Env. had a requirement of syft=0.2.6 while PySyft Env. had a requirement of syft=0.2.7
 
 ## Tutorials / References
 1. [OpenMined Welcome Page, high level organization and projects](https://github.com/OpenMined/OM-Welcome-Package)
