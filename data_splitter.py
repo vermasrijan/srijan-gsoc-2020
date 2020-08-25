@@ -2,52 +2,14 @@
 import pandas as pd
 import pyarrow.parquet as pq
 from typing import NamedTuple
-import os.path as path
-import os
-# import requests
-import numpy as np
 import random
-import yaml
-import subprocess
-
-# syft dependencies
-import syft as sy
-
-#########<syft==0.2.8>#######################
-# # Dynamic FL -->
-from syft.grid.clients.data_centric_fl_client import DataCentricFLClient
-
-# #Static FL -->
-from syft.grid.clients.model_centric_fl_client import ModelCentricFLClient
-
-import torch
-import pickle
-import time
 import numpy as np
-import torchvision
-from torchvision import datasets, transforms
 
 #sklearn for preprocessing the data and train-test split
-from sklearn.utils import class_weight
-from sklearn.model_selection import train_test_split, cross_val_score, KFold
-from sklearn.preprocessing import OneHotEncoder, MinMaxScaler, LabelEncoder
-from sklearn.metrics import r2_score, mean_squared_error, mean_absolute_error, accuracy_score, classification_report
-from sklearn.metrics import f1_score, accuracy_score, precision_score, recall_score, r2_score, mean_squared_error, mean_absolute_error
+from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 
 seed = 7
 
-
-
-# import click
-#
-# @click.command()
-# @click.option('--input', default="./data", help='Input for dataset')
-# @click.option('--train_type', default="centralized", help='Either centralized or decentralized fashion')
-# @click.option("--dataset_size", default="huber", help="")
-# @click.option('--split_type', default=5, help='')
-# @click.option('--split_size', default=1, help='')
-# @click.option('--nodes', default=1, help="")
-# @click.option('--ports', default=3, help="species_in_validation")
 class Labels(NamedTuple):
     '''
     One-hot labeled data
@@ -56,7 +18,6 @@ class Labels(NamedTuple):
     sex: np.ndarray
     age: np.ndarray
     death: np.ndarray
-
 
 class Genes:
     '''
@@ -87,7 +48,7 @@ class Genes:
 
         if problem_type == "classification":
             dummies_df = pd.get_dummies(self.labels["Age"])
-            print(dummies_df.columns.tolist())
+            # print(dummies_df.columns.tolist())
             self.Y = dummies_df.values
 
         if problem_type == "regression":
@@ -165,198 +126,124 @@ class Genes:
         df_normalized = pd.DataFrame(x_scaled, columns=df.columns, index=df.index)
         return df_normalized
 
-samples_path = 'gtex/data/gtex/v8_samples.parquet'
-expressions_path = 'gtex/data/gtex/v8_expressions.parquet'
+    def Huber(self, yHat, y, delta=1.):
+        return np.where(np.abs(y - yHat) < delta, .5 * (y - yHat) ** 2, delta * (np.abs(y - yHat) - 0.5 * delta))
+
+    def transform_to_probas(self, age_intervals):
+        class_names = ['20-29', '30-39', '40-49', '50-59', '60-69', '70-79']
+        res = []
+        for a in age_intervals:
+            non_zero_index = class_names.index(a)
+            res.append([0 if i != non_zero_index else 1 for i in range(len(class_names))])
+        return np.array(res)
+
+    def transform_to_interval(self, age_probas):
+        class_names = ['20-29', '30-39', '40-49', '50-59', '60-69', '70-79']
+        return np.array(list(map(lambda p: class_names[np.argmax(p)], age_probas)))
 
 
-def Huber(yHat, y, delta=1.):
-    return np.where(np.abs(y - yHat) < delta, .5 * (y - yHat) ** 2, delta * (np.abs(y - yHat) - 0.5 * delta))
 
 
-def transform_to_probas(age_intervals):
-    class_names = ['20-29', '30-39', '40-49', '50-59', '60-69', '70-79']
-    res = []
-    for a in age_intervals:
-        non_zero_index = class_names.index(a)
-        res.append([0 if i != non_zero_index else 1 for i in range(len(class_names))])
-    return np.array(res)
+class ClientGenerator:
+
+    def balanced_sample_maker(self, X, y, sample_size, random_seed=None):
+        """ return a balanced data set by sampling all classes with sample_size
+        Parameters:
+        ===========
+        X: {numpy.ndarrray}
+        y: {numpy.ndarray}
+        """
+        uniq_levels = np.unique(y)
+        uniq_counts = {level: sum(y == level) for level in uniq_levels}
+
+        if not random_seed is None:
+            np.random.seed(random_seed)
+
+        # find observation index of each class levels
+        groupby_levels = {}
+        for ii, level in enumerate(uniq_levels):
+            obs_idx = [idx for idx, val in enumerate(y) if val == level]
+            groupby_levels[level] = obs_idx
+        # oversampling on observations of each label
+        balanced_copy_idx = []
+        for gb_level, gb_idx in groupby_levels.items():
+            over_sample_idx = np.random.choice(gb_idx, size=sample_size, replace=True).tolist()
+            balanced_copy_idx += over_sample_idx
+        np.random.shuffle(balanced_copy_idx)
+
+        return (X[balanced_copy_idx, :], y[balanced_copy_idx], balanced_copy_idx)
+
+    def label_encode(self, y):
+        le = LabelEncoder()
+        le.fit(y)
+        y = le.transform(y)
+        return y
+
+    def create_clients(self, x_list, label_list, num_clients=5, initial='clients'):
+        ''' return: a dictionary with keys clients' names and value as
+                    data shards - tuple of input and label lists.
+            args:
+                x_list: a list of numpy arrays of training samples
+                label_list:a list of binarized labels for each class
+                num_client: number of fedrated members (clients)
+                initials: the clients'name prefix, e.g, clients_1
+
+        '''
+
+        # create a list of client names
+        client_names = ['{}_{}'.format(initial, i + 1) for i in range(num_clients)]
+
+        # randomize the data
+        data = list(zip(x_list, label_list))
+        random.shuffle(data)
+
+        # shard data and place at each client
+        size = len(data) // num_clients
+        shards = [data[i:i + size] for i in range(0, size * num_clients, size)]
+
+        # number of clients must equal number of shards
+        assert (len(shards) == len(client_names))
+
+        return {client_names[i]: shards[i] for i in range(len(client_names))}
 
 
-def transform_to_interval(age_probas):
-    class_names = ['20-29', '30-39', '40-49', '50-59', '60-69', '70-79']
-    return np.array(list(map(lambda p: class_names[np.argmax(p)], age_probas)))
-
-genes = Genes(samples_path, expressions_path, problem_type="classification")
-X = genes.get_features_dataframe().values
-Y = genes.Y
-
-a = transform_to_interval(Y)
-unique, counts = np.unique(a, return_counts=True)
-
-b = [np.where(r==1)[0][0] for r in Y]
-unique, counts = np.unique(b, return_counts=True)
-
-df_pie = pd.DataFrame(columns = ['age_group','label'])
-df_pie['age_group'] = a
-df_pie['label'] = b
-
-import numpy as np
-def balanced_sample_maker(X, y, sample_size, random_seed=None):
-    """ return a balanced data set by sampling all classes with sample_size
-        current version is developed on assumption that the positive
-        class is the minority.
-
-    Parameters:
-    ===========
-    X: {numpy.ndarrray}
-    y: {numpy.ndarray}
-    """
-    uniq_levels = np.unique(y)
-    uniq_counts = {level: sum(y == level) for level in uniq_levels}
-
-    if not random_seed is None:
-        np.random.seed(random_seed)
-
-    # find observation index of each class levels
-    groupby_levels = {}
-    for ii, level in enumerate(uniq_levels):
-        obs_idx = [idx for idx, val in enumerate(y) if val == level]
-        groupby_levels[level] = obs_idx
-    # oversampling on observations of each label
-    balanced_copy_idx = []
-    for gb_level, gb_idx in groupby_levels.items():
-        over_sample_idx = np.random.choice(gb_idx, size=sample_size, replace=True).tolist()
-        balanced_copy_idx+=over_sample_idx
-    np.random.shuffle(balanced_copy_idx)
-
-    return (X[balanced_copy_idx, :], y[balanced_copy_idx], balanced_copy_idx)
-
-
-no_samples_to_take = 200
-res = balanced_sample_maker(X,np.asarray(df_pie['age_group'].values), no_samples_to_take)
-
-unique, counts = np.unique(res[1], return_counts=True)
-print(dict(zip(unique, counts)))
-
-le = LabelEncoder()
-le.fit(res[1])
-y = le.transform(res[1])
-
-
-def create_clients(image_list, label_list, num_clients=5, initial='clients'):
-    ''' return: a dictionary with keys clients' names and value as
-                data shards - tuple of images and label lists.
+    def non_iid_x(self, x_list, label_list, x=1, num_intraclass_clients=10):
+        ''' creates x non_IID clients
         args:
-            image_list: a list of numpy arrays of training images
-            label_list:a list of binarized labels for each image
-            num_client: number of fedrated members (clients)
-            initials: the clients'name prefix, e.g, clients_1
+            x_list: python list of data points
+            label_list: python list of labels
+            x: none IID severity, 1 means each client will only have one class of data
+            num_intraclass_client: number of sub-client to be created from each none IID class,
+            e.g for x=1, we could create 10 further clients by splitting each class into 10
 
-    '''
+        return - dictionary
+            keys - clients's name,
+            value - client's non iid 1 data shard (as tuple list of images and labels) '''
 
-    # create a list of client names
-    client_names = ['{}_{}'.format(initial, i + 1) for i in range(num_clients)]
+        non_iid_x_clients = dict()
 
-    # randomize the data
-    data = list(zip(image_list, label_list))
-    random.shuffle(data)
+        # create unique label list and shuffle
+        unique_labels = np.unique(np.array(label_list))
+        random.shuffle(unique_labels)
 
-    # shard data and place at each client
-    size = len(data) // num_clients
-    shards = [data[i:i + size] for i in range(0, size * num_clients, size)]
+        # create sub label lists based on x
+        sub_lab_list = [unique_labels[i:i + x] for i in range(0, len(unique_labels), x)]
 
-    # number of clients must equal number of shards
-    assert (len(shards) == len(client_names))
+        for item in sub_lab_list:
+            class_data = [(image, label) for (image, label) in zip(x_list, label_list) if label in item]
 
-    return {client_names[i]: shards[i] for i in range(len(client_names))}
+            # decouple tuple list into seperate input and label lists
+            images, labels = zip(*class_data)
 
-a = create_clients(res[0],y, 2)
+            # create formated client initials
+            initial = ''
+            for lab in item:
+                initial = initial + lab + '_'
 
-datasets = []
-labels = []
-for key, val in a.items():
-    data, label = zip(*a[key])
-    label = np.array(label)
-    data = np.array(data)
-    data, label = np.vstack(data).astype(np.uint8), np.vstack(label).astype(np.uint8)
-    label = label.reshape(label.shape[0])
+            # create num_intraclass_clients clients from the class
+            intraclass_clients = self.iid_clients(list(images), list(labels), num_intraclass_clients, initial)
 
-    # Convert numpy array to torch tensors -->
-    data = torch.from_numpy(data)
-    label = torch.from_numpy(label)
+            # append intraclass clients to main clients'dict
+            non_iid_x_clients.update(intraclass_clients)
 
-    data = torch.tensor(data, dtype=torch.float32)
-    label = torch.tensor(label, dtype=torch.int64)
-
-    datasets.append(data)
-    labels.append(label)
-
-doc = {'version': '3',
- 'services': {'network': {'image': 'openmined/grid-network:v028',
-   'environment': ['PORT=5000',
-    'SECRET_KEY=ineedtoputasecrethere',
-    'DATABASE_URL=sqlite:///databasenetwork.db'],
-   'ports': ['5000:5000']}}}
-
-n = 2
-_ports = [str(i) for i in range(3000, 3000+n, 1)]
-
-for i in range(n):
-    doc['services'].update(
-        {'h{}'.format(i+1): {'image': 'openmined/grid-node:v028',
-        'environment': ['NODE_ID=h{}'.format(i+1),
-        'ADDRESS=http://0.0.0.0:{}/'.format(_ports[i]),
-        'PORT={}'.format(_ports[i]),
-        'NETWORK=http://network:5000',
-        'DATABASE_URL=sqlite:///databasenode.db'],
-        'depends_on': ["network"],
-        'ports': ['{0}:{0}'.format(_ports[i])]}
-        })
-
-with open('gtex/docker-compose.yml', 'w') as f:
-    yaml.dump(doc, f)
-
-cmd = ['docker-compose', 'up', '-d']
-print('===========')
-p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-print('==<STARTING DOCKER IMAGE>==')
-out, error = p.communicate()
-print(out)
-print('===========')
-print(error)
-print('===========')
-print('DONE!')
-time.sleep(15)
-
-
-hook = sy.TorchHook(torch)
-
-# Connect directly to grid nodes
-nodes = ["ws://0.0.0.0:{}".format(i) for i in _ports]
-
-compute_nodes = []
-for node in nodes:
-    # For syft 0.2.8 --> replace DynamicFLClient with DataCentricFLClient
-    compute_nodes.append( DataCentricFLClient(hook, node) )
-
-print(compute_nodes)
-
-tag_input = []
-tag_label = []
-
-for i in range(len(compute_nodes)):
-    tag_input.append(datasets[i].tag("#X", "#gtex_v8", "#dataset","#balanced").describe("The input datapoints to the GTEx_V8 dataset."))
-    tag_label.append(labels[i].tag("#Y", "#gtex_v8", "#dataset","#balanced").describe("The input labels to the GTEx_V8 dataset."))
-
-for i in range(len(compute_nodes)):
-    shared_x = tag_input[i].send(compute_nodes[i]) # First chunk of dataset to h1
-    shared_y = tag_label[i].send(compute_nodes[i]) # First chunk of labels to h1
-    print("X tensor pointer: ", shared_x)
-    print("Y tensor pointer: ", shared_y)
-
-time.sleep(120)
-
-for i in range(len(compute_nodes)):
-    compute_nodes[i].close()
-
-print("NODES CLOSED!!!!")
+        return non_iid_x_clients

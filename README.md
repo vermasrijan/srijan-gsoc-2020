@@ -8,65 +8,34 @@
 
 - [Requirements](#requirements)
 - [Installation and Initialization](#installation-and-initialization)
-  * [Environment 1: PyGrid](#environment-1-pygrid)
-  * [Environment 2: PySyft](#environment-2-pysyft)
+  * [Using Docker](#using-docker)
 - [Tutorials / References](#tutorials--references)
-- [TODO Next](#todo-next)
 - [Acknowledgements](#acknowledgements)
 
 ## Requirements
 
 At the moment, a standard machine with CPUs will work. 
-Support for GPU to be added later.
 
 ## Installation and Initialization
-### Environment 1: PyGrid
-- Step 1: Install dependencies via conda
+### Using Docker
+- Step 1: Install Docker
+    1. To install Docker, just follow the [docker documentation](https://docs.docker.com/install/).
+    2. Start your `docker daemon`
+- Step 2: Install dependencies via conda
     1. Install Miniconda, for your operating system, from [https://conda.io/miniconda.html](https://conda.io/miniconda.html)
     2. `git clone https://github.com/vermasrijan/srijan-gsoc-2020.git`
     3. `cd /path/to/srijan-gsoc-2020`
-    4. `conda env create -f openmined-environment.yml`
-    5. `conda activate openmined` (or `source activate openmined` for older versions of conda)
-    6. `git submodule update --init` (To add all the submodules)
-- Step 2: Start a Gateway on machine A, a.k.a GridNetwork. If running locally, then execute the below in a new CLI tab.
-    1. `cd PyGridNetwork` (That is, go into PyGridNetwork directory, which should be inside `srijan-gsoc-2020`)
-    2. ```python -m gridnetwork --port=5000 --host=localhost --start_local_db```
-    - Explanation of the above command -  
-        - You should now be able to see a message - `Open Grid Network`, if you go to `localhost:5000` using a browser.
-        - Gateway sqlite database file (`databaseGridNetwork.db`) is created under `PyGridNetwork/gridnetwork`
-- Step 3: Start a grid node on machine B (or run the following in a new CLI tab)
-    1. To start a node instance, go into `PyGridNode` directory & run the following command - 
-    - `python -m gridnode --id=h1 --port=3000 --host=localhost --gateway_url=http://localhost:5000`
-        - You should see the nodes that you added at `localhost:5000/connected-nodes`
-        - You can also create more nodes by changing the id and port number
-> __NOTE__: The above steps will create node instances in the same machine. For remote execution, make sure that all firewalls are disabled.
-    
-### Environment 2: PySyft
-- Step 1: Install PySyft dependencies via conda ( Follow the steps given for Environment 1 first! )
-    1. `conda create -n pysyft python=3.7.4`
-    2. `conda activate pysyft` (or `source activate pysyft` for older versions of conda)
-    3. `cd PySyft`
-    - Note: PySyft is a git submodule which was installed when following Environment 1 steps
-    4. `pip install -e .`
-    5. `cd ..`
-    6. `conda env update --name pysyft --file pysyft-environment.yml`
-- Step 2: Run `data_owner` & `model_owner` notebooks _separately_ and __sequentially__:
-    1. Start a notebook by running the following command --> `jupyter notebook`
-    2. Data_owner notebook is `data-owner_client.ipynb`. This notebook helps in sending the data to a GridNetwork.
-        - After running the data-owner notebook, you'll be able to see all the available tags if you go to `localhost:5000/search-available-tags`
-    3. Model_owner notebook is `model-owner_third-party.ipynb`. This notebook helps in searching the data on a GridNetwork.
-- Step 3: Clean the gateway database
-    - `rm PyGridNetwork/gridnetwork/databaseGridNetwork.db`
-- Step 4: Closing network ports
-    1. If the processes are not running in background, then you can simply press `Ctrl+C` on CLI, to close the open ports. Else, follow 2-4.
-    2. `ps -fA | grep python`
-    3. `kill -9 <PID-for-env1-step2>` 
-    4. `kill -9 <PID-for-env1-step3>`   
-    
-> __NOTE__: 
-> 1. Notebooks given in the [_Udacity Secure and Private AI_](https://www.udacity.com/course/secure-and-private-ai--ud185) are NOT updated. Instead, follow the example notebooks given [here](https://github.com/OpenMined/PySyft/tree/master/examples/tutorials)
-> 2. Why to have 2 separate environments?
-> - At the time of running these notebooks, PyGrid Env. had a requirement of syft=0.2.6 while PySyft Env. had a requirement of syft=0.2.7
+    4. `conda env create -f environment.yml`
+    5. `conda activate pysyft_v028` (or `source activate pysyft_v028` for older versions of conda)
+- Step 3: Install GTeX Dataset
+    - You can download the data from [here](https://drive.google.com/drive/folders/1cFcDhjzk82j7wXZMJ39xWNCmxEN2RzWq?usp=sharing)
+- Step 4: Local execution
+    1. Make sure your `docker daemon` is running
+    2. `python initializer.py`
+        - ADD_MORE
+        - ADD_MORE
+- Step 5: Stop running containers
+    - `docker kill $(docker ps -q)`
 
 ## Tutorials / References
 1. [OpenMined Welcome Page, high level organization and projects](https://github.com/OpenMined/OM-Welcome-Package)
@@ -75,9 +44,6 @@ Support for GPU to be added later.
 4. [PyGrid reorganization RoadMap](https://github.com/OpenMined/Roadmap/blob/master/web_and_mobile_team/projects/common/pygrid_reorganization.md)<br/>
 5. [OpenMined FL roadmap and other terminologies](https://github.com/OpenMined/Roadmap/blob/master/web_and_mobile_team/projects/federated_learning.md)
 6. [What is PyGrid demo](https://blog.openmined.org/what-is-pygrid-demo/)
-
-## TODO Next
-> TO-BE-ADDED
 
 ## Acknowledgements
 1. I would like to thank all my mentors for taking the time to mentor me and for their invaluable suggestions throughout. I truly appreciate their constant trust and encouragement!<br/>
