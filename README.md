@@ -21,6 +21,8 @@ At the moment, a standard machine with CPUs will work.
 - Step 1: Install Docker
     1. To install Docker, just follow the [docker documentation](https://docs.docker.com/install/).
     2. Start your `docker daemon`
+    3. Pull grid-node image : `docker pull srijanverma44/grid-node:v028`
+    4. Pull grid-network image : `docker pull srijanverma44/grid-network:v028`
 - Step 2: Install dependencies via conda
     1. Install Miniconda, for your operating system, from [https://conda.io/miniconda.html](https://conda.io/miniconda.html)
     2. `git clone https://github.com/vermasrijan/srijan-gsoc-2020.git`
