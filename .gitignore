@@ -8,8 +8,6 @@ data/gtex/*
 data/gtex-20200712T162954Z-001.zip
 notebooks/GTEx_V8_NN_original.ipynb
 
-data/
-
 logs/
 
 # Flask
