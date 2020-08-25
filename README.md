@@ -35,8 +35,22 @@ At the moment, a standard machine with CPUs will work.
     1. Make sure your `docker daemon` is running
     2. `cd src` and run - 
         - `python initializer.py`
-        - ADD_MORE
-        - ADD_MORE
+```     
+Usage: initializer.py [OPTIONS]
+
+Options:
+  --samples_path TEXT      Input path for samples
+  --expressions_path TEXT  Input for expressions
+  --train_type TEXT        Either centralized or decentralized fashion
+  --dataset_size INTEGER   Size of data for training
+  --split_type TEXT        balanced / unbalanced / iid / non_iid
+  --split_size FLOAT       Train / Test Split
+  --no_of_clients INTEGER  Clients / Nodes for decentralized training
+  --node_start_port TEXT   Start port No. for a node
+  --grid_address TEXT      grid address for network
+  --grid_port TEXT         grid port for network
+  --help                   Show this message and exit.
+```
 - Step 5: Stop running containers
     - `docker kill $(docker ps -q)`
 
