@@ -31,7 +31,7 @@ At the moment, a standard machine with CPUs will work.
     - You can download the data from [here](https://drive.google.com/drive/folders/1cFcDhjzk82j7wXZMJ39xWNCmxEN2RzWq?usp=sharing)
 - Step 4: Local execution
     1. Make sure your `docker daemon` is running
-    2. cd into src and run - 
+    2. `cd src` and run - 
         - `python initializer.py`
         - ADD_MORE
         - ADD_MORE
