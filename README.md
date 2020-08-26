@@ -29,6 +29,12 @@ At the moment, a standard machine with CPUs will work.
     3. `cd /path/to/srijan-gsoc-2020`
     4. `conda env create -f environment.yml`
     5. `conda activate pysyft_v028` (or `source activate pysyft_v028` for older versions of conda)
+    > NOTE: Some Common Errors -                                                                                                                                                                                                                                                                                                                                                                                                                            
+    > 1. While creating an env. on a linux machine, you may get the following error: `No space left on device`.                                                                                                                                                                                                                                                                                                                                                                                                            
+    > 2. Solution: 
+    >   - `export TMPDIR=$HOME/tmp` (i.e. change /tmp directory location)
+    >   - `mkdir -p $TMPDIR` , and then run the following command -
+    >   - `conda env create -f environment.yml`
 - Step 3: Install GTeX Dataset
     - You can download the data from [here](https://drive.google.com/drive/folders/1cFcDhjzk82j7wXZMJ39xWNCmxEN2RzWq?usp=sharing)
 - Step 4: Local execution
