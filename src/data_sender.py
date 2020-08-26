@@ -39,7 +39,7 @@ class Preprocess:
     def docker_compose_generator(self, n):
 
         doc = {'version': '3',
-               'services': {'network': {'image': 'openmined/grid-network:development',
+               'services': {'network': {'image': 'srijanverma44/grid-network:v028',
                                         'environment': ['PORT=5000',
                                                         'SECRET_KEY=ineedtoputasecrethere',
                                                         'DATABASE_URL=sqlite:///databasenetwork.db'],
@@ -49,7 +49,7 @@ class Preprocess:
 
         for i in range(n):
             doc['services'].update(
-                {'h{}'.format(i + 1): {'image': 'openmined/grid-node:development',
+                {'h{}'.format(i + 1): {'image': 'srijanverma44/grid-node:v028',
                                        'environment': ['NODE_ID=h{}'.format(i + 1),
                                                        'ADDRESS=http://h{0}:{1}/'.format(i + 1, _ports[i]),
                                                        'PORT={}'.format(_ports[i]),
