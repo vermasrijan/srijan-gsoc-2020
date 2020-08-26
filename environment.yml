@@ -17,3 +17,4 @@ dependencies:
     - pyyaml==5.3.1
     - requests==2.22.0
     - scikit-learn==0.22.2
+    - pyarrow==0.17.1
