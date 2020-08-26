@@ -18,7 +18,7 @@ At the moment, a standard machine with CPUs will work.
 
 ## Installation and Initialization
 ### Using Docker
-- Step 1: Install Docker
+- Step 1: Install Docker and pull required images from DockerHub
     1. To install Docker, just follow the [docker documentation](https://docs.docker.com/install/).
     2. Start your `docker daemon`
     3. Pull grid-node image : `docker pull srijanverma44/grid-node:v028`
