@@ -118,3 +118,6 @@ venv.bak/
 *.log
 *.log.*
 *.bak
+
+# Ignoring dvc files
+.dvcignore
