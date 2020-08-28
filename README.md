@@ -36,7 +36,9 @@ At the moment, a standard machine with CPUs will work.
     >   - `mkdir -p $TMPDIR` , and then run the following command -
     >   - `conda env create -f environment.yml`
 - Step 3: Install GTeX Dataset
-    - You can download the data from [here](https://drive.google.com/drive/folders/1cFcDhjzk82j7wXZMJ39xWNCmxEN2RzWq?usp=sharing)
+```
+dvc get-url https://www.dropbox.com/s/cmxruuqi26zweeq/gtex.zip?dl=1 data/
+```
 - Step 4: Local execution
     1. Make sure your `docker daemon` is running
     2. `cd src` and run - 
