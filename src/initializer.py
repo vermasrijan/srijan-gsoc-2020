@@ -10,8 +10,8 @@ warnings.simplefilter("ignore", DeprecationWarning)
 
 import click
 @click.command()
-@click.option('--samples_path', default="data/gtex/v8_samples.parquet", help='Input path for samples')
-@click.option('--expressions_path', default="data/gtex/v8_expressions.parquet", help='Input for expressions')
+@click.option('--samples_path', default="../data/gtex/v8_samples.parquet", help='Input path for samples')
+@click.option('--expressions_path', default="../data/gtex/v8_expressions.parquet", help='Input for expressions')
 @click.option('--train_type', default="centralized", help='Either centralized or decentralized fashion')
 @click.option('--dataset_size', default=600, help="Size of data for training")
 @click.option('--split_type', default='balanced', help='balanced / unbalanced / iid / non_iid')
