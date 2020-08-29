@@ -10,6 +10,8 @@
 - [Installation and Initialization](#installation-and-initialization)
   * [Using Docker](#using-docker)
 - [Tutorials / References](#tutorials--references)
+- [GSoC Blog Post](#gsoc-blog-post)
+- [Project Status](#project-status)
 - [Acknowledgements](#acknowledgements)
 
 ## Requirements
@@ -69,6 +71,12 @@ Options:
 4. [PyGrid reorganization RoadMap](https://github.com/OpenMined/Roadmap/blob/master/web_and_mobile_team/projects/common/pygrid_reorganization.md)<br/>
 5. [OpenMined FL roadmap and other terminologies](https://github.com/OpenMined/Roadmap/blob/master/web_and_mobile_team/projects/federated_learning.md)
 6. [What is PyGrid demo](https://blog.openmined.org/what-is-pygrid-demo/)
+
+## GSoC Blog Post
+- TO_BE_ADDED
+
+## Project Status
+**Under Development:** Please note that the project is in it's early development stage and all the features haven't been tested
 
 ## Acknowledgements
 1. I would like to thank all my mentors for taking the time to mentor me and for their invaluable suggestions throughout. I truly appreciate their constant trust and encouragement!<br/>
