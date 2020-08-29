@@ -20,3 +20,6 @@ install:
 - echo $TRAVIS_PYTHON_VERSION
 - conda env create -n pysyft_v028 -f environment.yml python=$TRAVIS_PYTHON_VERSION
 - source activate pysyft_v028
+
+script:
+  - python tests/test_import_errors.py
