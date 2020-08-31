@@ -1,11 +1,16 @@
 # This branch is for OpenMined workflows - 
-
+[![Build Status](https://travis-ci.org/vermasrijan/srijan-gsoc-2020.svg?branch=openmined)](https://travis-ci.org/vermasrijan/srijan-gsoc-2020)
+![](https://github.com/OpenMined/PySyft/workflows/Tests/badge.svg)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
+[![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
 ### Mentors : [Anton Kulaga](https://www.linkedin.com/in/antonkulaga/?originalSubdomain=ro), [Ivan Shcheklein](https://www.linkedin.com/in/shcheklein/), [Dmitry Petrov](https://www.linkedin.com/in/dmitryleopetrov/), [Vladyslava Tyshchenko](https://www.linkedin.com/in/vladyslava-tyshchenko-296742125/?originalSubdomain=ua), [Dmitry Nowicki]()<br/><br/>
 > __NOTE__: 
 > 1. Notebooks given in this repository have been taken from this [branch](https://github.com/OpenMined/PySyft/tree/master/examples/tutorials) and have been modified.
 > 2. Testing of these notebooks has been done on a MacOS / Linux based system
-## Table of Contents
 
+![](https://blog.openmined.org/content/images/2019/10/PySyft-tensorflow-gif-v2.gif)
+
+## Table of Contents
 - [Requirements](#requirements)
 - [Installation and Initialization](#installation-and-initialization)
   * [Using Docker](#using-docker)
@@ -73,10 +78,10 @@ Options:
 6. [What is PyGrid demo](https://blog.openmined.org/what-is-pygrid-demo/)
 
 ## GSoC Blog Post
-- TO_BE_ADDED
+- [GSoC Journey 2020](https://medium.com/@verma.srijan/gsoc-journey-2020-12e806fc80c3)
 
 ## Project Status
-**Under Development:** Please note that the project is in it's early development stage and all the features haven't been tested
+**Under Development:** Please note that the project is in its early development stage and all the features have not been tested yet.
 
 ## Acknowledgements
 1. I would like to thank all my mentors for taking the time to mentor me and for their invaluable suggestions throughout. I truly appreciate their constant trust and encouragement!<br/>
