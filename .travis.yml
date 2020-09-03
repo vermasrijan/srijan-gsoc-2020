@@ -4,7 +4,7 @@ language: python
 sudo: false
 
 python:
-  - 3.6.10
+  - 3.7.9
 
 install:
 # Here we download miniconda and install the dependencies
