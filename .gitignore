@@ -9,7 +9,8 @@ notebooks/GTEx_V8_preprocess-test.ipynb
 notebooks/GTEx_V8_preprocess.ipynb
 notebooks/model-owner_GTEx-test.ipynb
 
-
+# Docker
+docker-compose.yml
 
 # source code
 src/docker-compose.yml
