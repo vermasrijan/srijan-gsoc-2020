@@ -1,0 +1,28 @@
+centralized_train:
+  cmd: python src/initializer.py --train_type centralized --dataset_size 4000 --samples_path
+    data/gtex/v8_samples.parquet --dataset_size 4000 --expressions_path data/gtex/v8_expressions.parquet
+    --metrics_path data/metrics --n_epochs 2
+  deps:
+  - path: data/gtex/v8_expressions.parquet
+    md5: 39edeb76ced0bd37aa957d1b3bb1a093
+  - path: data/gtex/v8_samples.parquet
+    md5: 05e795a4b29fb1c537240cf55d711a3a
+  - path: src/initializer.py
+    md5: 87c2da9d546bec4621851bb50f617730
+  outs:
+  - path: data/metrics/centralized_metrics.json
+    md5: f58a6807fe69a0f426def580f588559a
+decentralized_train:
+  cmd: python src/initializer.py --train_type decentralized --dataset_size 4000 --samples_path
+    data/gtex/v8_samples.parquet --dataset_size 4000 --expressions_path data/gtex/v8_expressions.parquet
+    --metrics_path data/metrics --n_epochs 2 --no_of_clients 4
+  deps:
+  - path: data/gtex/v8_expressions.parquet
+    md5: 39edeb76ced0bd37aa957d1b3bb1a093
+  - path: data/gtex/v8_samples.parquet
+    md5: 05e795a4b29fb1c537240cf55d711a3a
+  - path: src/initializer.py
+    md5: 7de3b4e3bd8518f1aee916988c5f503b
+  outs:
+  - path: data/metrics/decentralized_metrics.json
+    md5: 2c878875ab8e4d42b74616b363a9be0e
