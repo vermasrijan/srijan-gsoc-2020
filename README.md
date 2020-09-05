@@ -4,22 +4,35 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
 [![GitHub license](https://img.shields.io/github/license/Naereen/StrapDown.js.svg)](https://github.com/Naereen/StrapDown.js/blob/master/LICENSE)
 ### Mentors : [Anton Kulaga](https://www.linkedin.com/in/antonkulaga/?originalSubdomain=ro), [Ivan Shcheklein](https://www.linkedin.com/in/shcheklein/), [Dmitry Petrov](https://www.linkedin.com/in/dmitryleopetrov/), [Vladyslava Tyshchenko](https://www.linkedin.com/in/vladyslava-tyshchenko-296742125/?originalSubdomain=ua), [Dmitry Nowicki]()<br/><br/>
-> __NOTE__: 
-> 1. Notebooks given in this repository have been taken from this [branch](https://github.com/OpenMined/PySyft/tree/master/examples/tutorials) and have been modified.
-> 2. Testing of these notebooks has been done on a MacOS / Linux based system
 
 ![](https://blog.openmined.org/content/images/2019/10/PySyft-tensorflow-gif-v2.gif)
 
 ## Table of Contents
+- [About](#about)
 - [Requirements](#requirements)
 - [Installation and Initialization](#installation-and-initialization)
 - [Local Execution](#local-execution)
+    - [Usage](#usage)
+    - [Centralized Example](#centralized-example)
+        - [DVC Centralized Stage](#dvc-centralized-stage)
+    - [Decentralized Example](#decentralized-example)
+        - [DVC Decentralized Stage](#dvc-decentralized-stage)
+    - [Localhosts Example Screenshots](#localhosts-example-screenshots)
 - [Notebooks](#notebooks)
 - [Tutorials / References](#tutorials--references)
 - [GSoC Blog Post](#gsoc-blog-post)
 - [Project Status](#project-status)
 - [Acknowledgements](#acknowledgements)
 
+## About
+- This repo is an introductory project for simulating Federated Learning training, on decentralized biomedical datasets.
+- Tech Stack used: 
+    - [OpenMined](https://www.openmined.org/): [PySyft](https://github.com/OpenMined/PySyft), [PyGrid](https://github.com/OpenMined/PyGrid)
+    - [DVC](https://dvc.org/)
+    - [PyTorch](https://pytorch.org/)
+    - [Docker](https://www.docker.com/)
+- Example Dataset used:
+    - [GTEx](https://gtexportal.org/home/): The Common Fund's Genotype-Tissue Expression (GTEx) Program established a data resource and tissue bank to study the relationship between genetic variants (inherited changes in DNA sequence) and gene expression (how genes are turned on and off) in multiple human tissues and across individuals.
 ## Requirements
 
 At the moment, a standard machine with CPUs will work. 
@@ -43,7 +56,7 @@ At the moment, a standard machine with CPUs will work.
     >   - `mkdir -p $TMPDIR`
     >   - `source ~/.bashrc` , and then run the following command -
     >   - `conda env create -f environment.yml`
-- Step 3: Install GTeX `V8` Dataset
+- Step 3: Install [GTEx](https://gtexportal.org/home/) `V8` Dataset
     - Import `samples` and `expressions` data:  
 ```
 dvc import-url https://www.dropbox.com/s/kbx03yz7y1r6kee/v8_samples.parquet?dl=1 data/gtex/ -v
@@ -51,11 +64,16 @@ dvc import-url https://www.dropbox.com/s/kbx03yz7y1r6kee/v8_samples.parquet?dl=1
 ```
 dvc import-url https://www.dropbox.com/s/btv2jhk1rwpaplz/v8_expressions.parquet?dl=1 data/gtex/ -v
 ```
+ - The above commands will download GTEx data inside `data/gtex` directory. 
+> NOTE: `.dvc` files will be generated as well.
 
 ## Local execution
+### Usage
+- `src/initializer.py` is a python script for initializing either a centralized training, or a decentralized one.
+- This script will create a compose yaml file, initialize `client/network` containers and will execute FL/centralized training.
 1. Make sure your `docker daemon` is running
-2. `cd src` and run - 
-    - `python initializer.py`
+2. Run the following command - 
+    - `python src/initializer.py`
 ```     
 Usage: initializer.py [OPTIONS]
 
@@ -76,9 +94,10 @@ Options:
   --help                   Show this message and exit.
 ```
 
+### Centralized Example
 - `Centralized training` example output, using **2 epochs**:
 ```
-python initializer.py --train_type centralized --dataset_size 4000         
+python src/initializer.py --train_type centralized --dataset_size 4000         
 ============================================================
 ----<DATA PREPROCESSING STARTED..>----
 ----<STARTED TRAINING IN A centralized FASHION..>----
@@ -89,10 +108,26 @@ Epoch: 1 Training loss: 0.000447  | Training Accuracy: 0.166
 ============================================================
 OVERALL RUNTIME: 83.436 seconds
 ```
+#### DVC Centralized Stage
+```
+dvc run -n centralized_train \
+ -d data/gtex/v8_samples.parquet \
+ -d data/gtex/v8_expressions.parquet \
+ -d src/initializer.py \
+ -M data/metrics/centralized_metrics.json \
+ python src/initializer.py --train_type \
+centralized --dataset_size 4000 \
+--samples_path data/gtex/v8_samples.parquet \
+--dataset_size 4000 --expressions_path data/gtex/v8_expressions.parquet \
+--metrics_path data/metrics --n_epochs 2
+```
+OR <br/>
+`dvc repro centralized_train`
 
+### Decentralized Example
 - `Decentralized training` example output, using **2 epochs**:
 ```
-python initializer.py --train_type decentralized --no_of_clients 4 --dataset_size 4000
+python src/initializer.py --train_type decentralized --no_of_clients 4 --dataset_size 4000
 ============================================================
 ----<DATA PREPROCESSING STARTED..>----
 ----<STARTED TRAINING IN A decentralized FASHION..>----
@@ -117,11 +152,6 @@ Train Epoch: 1 | With h3 data |: [1998/3996 (50%)]      Train Loss: 0.001792 | T
 Train Epoch: 1 | With h4 data |: [2997/3996 (75%)]      Train Loss: 0.001792 | Train Acc: 0.246
 Train Epoch: 1 | With h2 data |: [3996/3996 (100%)]     Train Loss: 0.001791 | Train Acc: 0.198
 ---<STOPPING DOCKER NODE/NETWORK CONTAINERS>----
-e35fa27288b5
-c473aa3dc5ad
-3883c9f1ab25
-f3373da1ebcb
-bd5dcfbdaf58
 ---<SAVING METRICS.....>----
 ============================================================
 OVERALL RUNTIME: 211.788 seconds
@@ -129,6 +159,33 @@ OVERALL RUNTIME: 211.788 seconds
 > NOTE: Some errors while training in a decentralized way:
 > - `ImportError: sys.meta_path is None, Python is likely shutting down`
 > - Solution - NOT YET RESOLVED!
+
+#### DVC Decentralized Stage
+```
+dvc run -n decentralized_train \
+ -d data/gtex/v8_samples.parquet \
+ -d data/gtex/v8_expressions.parquet \
+ -d src/initializer.py \
+ -M data/metrics/decentralized_metrics.json \
+ python src/initializer.py --train_type \
+decentralized --dataset_size 4000 \
+--samples_path data/gtex/v8_samples.parquet \
+--dataset_size 4000 --expressions_path data/gtex/v8_expressions.parquet \
+--metrics_path data/metrics --n_epochs 2 --no_of_clients 4
+```
+OR <br/>
+`dvc repro decentralized_train`
+
+### Localhosts Example Screenshots
+1. Following is what you may see at http://0.0.0.0:5000
+    - ![](data/images/open_network.png)
+2. Following is what you may see at http://0.0.0.0:5000/connected-nodes
+    - ![](data/images/connected_nodes.png)
+3. Following is what you may see at http://0.0.0.0:5000/search-available-tags
+    - ![](data/images/search_available_tags.png)
+4. Following is what you may see at http://0.0.0.0:3000
+    - ![](data/images/grid_node.png)
+
 
 ## Notebooks
 - STEP 1: `docker-compose -f notebook-docker-compose.yml up`
@@ -147,6 +204,11 @@ docker rm $(docker stop $(docker ps -a -q --filter ancestor=srijanverma44/grid-n
 ```
 docker rm $(docker stop $(docker ps -a -q --filter ancestor=srijanverma44/grid-node:v028 --format="{{.ID}}"))
 ```
+> __NOTE__: 
+> 1. Notebooks given in this repository have been taken from this [branch](https://github.com/OpenMined/PySyft/tree/master/examples/tutorials) and have been modified.
+> 2. Testing of these notebooks has been done on a MacOS / Linux based system
+
+
 ## Tutorials / References
 1. [OpenMined Welcome Page, high level organization and projects](https://github.com/OpenMined/OM-Welcome-Package)
 2. [OpenMined full stack, well explained](https://www.youtube.com/watch?v=NJBBE_SN90A)<br/>
