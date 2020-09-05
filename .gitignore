@@ -4,6 +4,12 @@ data/gtex/v8_samples.parquet
 data/gtex-20200712T162954Z-001.zip
 data/balanced/numpy_files/*
 notebooks/GTEx_V8_NN_original.ipynb
+notebooks/data-owner_GTEx-test.ipynb
+notebooks/GTEx_V8_preprocess-test.ipynb
+notebooks/GTEx_V8_preprocess.ipynb
+notebooks/model-owner_GTEx-test.ipynb
+
+
 
 # source code
 src/docker-compose.yml
