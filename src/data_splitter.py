@@ -179,7 +179,7 @@ class ClientGenerator:
         y = le.transform(y)
         return y
 
-    def create_clients(self, x_list, label_list, num_clients=5, initial='clients'):
+    def create_clients(self, x_list, label_list, num_clients=5, initial='client'):
         ''' return: a dictionary with keys clients' names and value as
                     data shards - tuple of input and label lists.
             args:
@@ -191,7 +191,7 @@ class ClientGenerator:
         '''
 
         # create a list of client names
-        client_names = ['{}_{}'.format(initial, i + 1) for i in range(num_clients)]
+        client_names = ['{}_h{}'.format(initial, i + 1) for i in range(num_clients)]
 
         # randomize the data
         data = list(zip(x_list, label_list))
