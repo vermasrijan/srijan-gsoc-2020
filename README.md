@@ -19,6 +19,7 @@
     - [Decentralized Example](#decentralized-example)
         - [DVC Decentralized Stage](#dvc-decentralized-stage)
     - [Localhosts Example Screenshots](#localhosts-example-screenshots)
+- [Running DVC stages](#running-dvc-stages)
 - [Notebooks](#notebooks)
 - [Tutorials / References](#tutorials--references)
 - [GSoC Blog Post](#gsoc-blog-post)
@@ -96,9 +97,12 @@ Options:
 ```
 
 ### Centralized Example
-- `Centralized training` example output, using **2 epochs**:
+- Example command:
 ```
-python src/initializer.py --train_type centralized --dataset_size 4000         
+python src/initializer.py --train_type centralized --dataset_size 4000        
+```
+- `Centralized training` example output, using **2 epochs**:
+``` 
 ============================================================
 ----<DATA PREPROCESSING STARTED..>----
 ----<STARTED TRAINING IN A centralized FASHION..>----
@@ -126,9 +130,12 @@ OR <br/>
 `dvc repro centralized_train`
 
 ### Decentralized Example
+- Example command:
+```
+python src/initializer.py --train_type decentralized --no_of_clients 4 --dataset_size 4000      
+```
 - `Decentralized training` example output, using **2 epochs**:
 ```
-python src/initializer.py --train_type decentralized --no_of_clients 4 --dataset_size 4000
 ============================================================
 ----<DATA PREPROCESSING STARTED..>----
 ----<STARTED TRAINING IN A decentralized FASHION..>----
@@ -187,6 +194,8 @@ OR <br/>
 4. Following is what you may see at http://0.0.0.0:3000
     - ![](data/images/grid_node.png)
 
+## Running DVC stages
+- DVC stages are in `dvc.yaml` file, to run dvc stage just use `dvc repro <stage_name>`
 
 ## Notebooks
 - STEP 1: `docker-compose -f notebook-docker-compose.yml up`
