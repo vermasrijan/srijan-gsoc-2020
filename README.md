@@ -1,4 +1,5 @@
-# This branch is for OpenMined workflows - 
+# Healthcare-Researcher-Connector (HRC) Package:
+#### A Federated Learning repository for simulating `decentralized training` on common biomedical datasets
 [![Build Status](https://travis-ci.org/vermasrijan/srijan-gsoc-2020.svg?branch=openmined)](https://travis-ci.org/vermasrijan/srijan-gsoc-2020)
 ![](https://github.com/OpenMined/PySyft/workflows/Tests/badge.svg)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
@@ -26,7 +27,7 @@
 
 ## About
 - This repo is an introductory project for simulating Federated Learning training, on decentralized biomedical datasets.
-- Tech Stack used: 
+- Technology Stack used: 
     - [OpenMined](https://www.openmined.org/): [PySyft](https://github.com/OpenMined/PySyft), [PyGrid](https://github.com/OpenMined/PyGrid)
     - [DVC](https://dvc.org/)
     - [PyTorch](https://pytorch.org/)
