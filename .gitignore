@@ -1,13 +1,15 @@
 # Data files
-gtex/data/gtex/
-gtex/data/gtex-20200712T162954Z-001.zip
-gtex/GTEx_V8_NN_original.ipynb
-gtex/data/gtex/v8_expressions.parquet
-gtex/data/gtex/vv8_samples.parquet
-data/gtex/*
+data/gtex/v8_expressions.parquet
+data/gtex/v8_samples.parquet
 data/gtex-20200712T162954Z-001.zip
 data/balanced/numpy_files/*
 notebooks/GTEx_V8_NN_original.ipynb
+
+# source code
+src/docker-compose.yml
+src/metrics.json
+src/decentralized_metrics.json
+src/centralized_metrics.json
 
 logs/
 
