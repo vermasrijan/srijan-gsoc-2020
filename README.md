@@ -1,5 +1,5 @@
 # Healthcare-Researcher-Connector (HRC) Package:
-#### A Federated Learning repository for simulating `decentralized training` on common biomedical datasets
+#### A Federated Learning repository for simulating `decentralized training` for common biomedical use-cases
 [![Build Status](https://travis-ci.org/vermasrijan/srijan-gsoc-2020.svg?branch=openmined)](https://travis-ci.org/vermasrijan/srijan-gsoc-2020)
 ![](https://github.com/OpenMined/PySyft/workflows/Tests/badge.svg)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/dwyl/esta/issues)
@@ -27,7 +27,7 @@
 - [Acknowledgements](#acknowledgements)
 
 ## About
-- This repo is an introductory project for simulating Federated Learning training, on decentralized biomedical datasets.
+- This repo is an introductory project for simulating Federated Learning training, for decentralized biomedical datasets.
 - Technology Stack used: 
     - [OpenMined](https://www.openmined.org/): [PySyft](https://github.com/OpenMined/PySyft), [PyGrid](https://github.com/OpenMined/PyGrid)
     - [DVC](https://dvc.org/)
@@ -238,8 +238,10 @@ docker rm $(docker stop $(docker ps -a -q --filter ancestor=srijanverma44/grid-n
 
 2. [Open Bioinformatics Foundation](https://www.open-bio.org/) admins, helpdesk and the whole community <br/>
 
-3. [Systems Biology of Aging Group](http://www.aging-research.group/) <br/>
+3. [OpenMined Community](https://www.openmined.org/), for their constant help throughout!
 
-4. [Iterative.ai](https://iterative.ai/) and [DVC](https://dvc.org/) <br/>
+4. [Systems Biology of Aging Group](http://www.aging-research.group/) <br/>
 
-5. [GSoC](https://summerofcode.withgoogle.com/) organizers, managers and Google 
+5. [Iterative.ai](https://iterative.ai/) and [DVC](https://dvc.org/) <br/>
+
+6. [GSoC](https://summerofcode.withgoogle.com/) organizers, managers and Google 
