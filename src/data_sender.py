@@ -10,7 +10,8 @@ from syft.grid.clients.data_centric_fl_client import DataCentricFLClient
 import torch
 import time
 import numpy as np
-from torchvision import datasets
+import os
+import json
 
 class Preprocess:
 
@@ -65,13 +66,26 @@ class Preprocess:
         return _ports
 
     def docker_initializer(self):
-        cmd = ['docker-compose', 'up', '-d']
-        print('===========')
+        cmd = ['docker-compose', '-f', 'docker-compose.yml', 'up', '-d']
+
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        print('==<STARTING DOCKER IMAGE>==')
+        print('---<STARTING DOCKER IMAGE>----')
         out, error = p.communicate()
-        print('DOCKER STARTED!')
-        time.sleep(15)
+        print('====DOCKER STARTED!=======')
+        time.sleep(10)
+
+    def docker_kill(self):
+        print('---<STOPPING DOCKER NODE/NETWORK CONTAINERS>----')
+        os.system('docker rm $(docker stop $(docker ps -a -q --filter ancestor=srijanverma44/grid-node:v028 --format="{{.ID}}"))')
+        time.sleep(3)
+        os.system('docker rm $(docker stop $(docker ps -a -q --filter ancestor=srijanverma44/grid-network:v028 --format="{{.ID}}"))')
+
+    def save_metrics(self, metrics_dict, metrics_path, train_type):
+
+        # Save metrics in metadata
+        print('---<SAVING METRICS.....>----')
+        with open(metrics_path + '/{}_metrics.json'.format(train_type), 'w') as f:
+            json.dump(metrics_dict, f, indent=4)
 
 
 class DataSender:
@@ -92,22 +106,26 @@ class DataSender:
         tag_label = []
 
         for i in range(len(compute_nodes)):
-            tag_input.append(datasets[i].tag("#X", "#gtex_v8", "#dataset", "#balanced").describe(
+            tag_input.append(datasets[i].tag("#X", "#gtex_v8", "#dataset").describe(
                 "The input datapoints to the GTEx_V8 dataset."))
-            tag_label.append(labels[i].tag("#Y", "#gtex_v8", "#dataset", "#balanced").describe(
+            tag_label.append(labels[i].tag("#Y", "#gtex_v8", "#dataset").describe(
                 "The input labels to the GTEx_V8 dataset."))
 
+        x_dataset = []
+        y_dataset = []
+
         for i in range(len(compute_nodes)):
-            shared_x = tag_input[i].send(compute_nodes[i])  # First chunk of dataset to h1
-            shared_y = tag_label[i].send(compute_nodes[i])  # First chunk of labels to h1
-            print("X tensor pointer: ", shared_x)
-            print("Y tensor pointer: ", shared_y)
+            x_dataset.append(tag_input[i].send(compute_nodes[i]))  # First chunk of dataset to h1
+            y_dataset.append(tag_label[i].send(compute_nodes[i]))  # First chunk of labels to h1
+            time.sleep(2)
+            print("X tensor pointer: ", x_dataset[-1])
+            print("Y tensor pointer: ", y_dataset[-1])
 
         time.sleep(15)
 
         for i in range(len(compute_nodes)):
             compute_nodes[i].close()
 
-        print("NODES CLOSED!")
+        time.sleep(5)
 
 
