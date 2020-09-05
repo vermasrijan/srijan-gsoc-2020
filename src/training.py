@@ -7,7 +7,8 @@ import torch.optim as optim
 import torch.nn.functional as F
 from syft.federated.floptimizer import Optims
 import time
-
+from syft.grid.clients.data_centric_fl_client import DataCentricFLClient
+import numpy as np
 
 class Net(nn.Module):
     def __init__(self):
@@ -39,20 +40,56 @@ class Decentralized:
 
         return total
 
-    def train_distributed(self, GRID_ADDRESS='0.0.0.0', GRID_PORT='5000', N_EPOCS=20, CLIENTS=None,SAVE_MODEL=False, SAVE_MODEL_PATH='./models'):
+    def train_distributed(self, _ports, datasets, labels, GRID_ADDRESS='0.0.0.0', GRID_PORT='5000', N_EPOCHS=20, CLIENTS=None,SAVE_MODEL=False, SAVE_MODEL_PATH='./models'):
+
+        # Send Data
         hook = sy.TorchHook(th)
+
+        # Connect directly to grid nodes
+        nodes = ["ws://0.0.0.0:{}".format(i) for i in _ports]
+
+        compute_nodes = []
+        for node in nodes:
+            # For syft 0.2.8 --> replace DynamicFLClient with DataCentricFLClient
+            compute_nodes.append(DataCentricFLClient(hook, node))
+
+        tag_input = []
+        tag_label = []
+
+        for i in range(len(compute_nodes)):
+            tag_input.append(datasets[i].tag("#X", "#gtex_v8", "#dataset").describe(
+                "The input datapoints to the GTEx_V8 dataset."))
+            tag_label.append(labels[i].tag("#Y", "#gtex_v8", "#dataset").describe(
+                "The input labels to the GTEx_V8 dataset."))
+
+        x_dataset = []
+        y_dataset = []
+
+        for i in range(len(compute_nodes)):
+            x_dataset.append(tag_input[i].send(compute_nodes[i]))  # First chunk of dataset to h1
+            y_dataset.append(tag_label[i].send(compute_nodes[i]))  # First chunk of labels to h1
+            time.sleep(2)
+            # print("X tensor pointer: ", x_dataset[-1])
+            # print("Y tensor pointer: ", y_dataset[-1])
+
+        time.sleep(2)
+
+        for i in range(len(compute_nodes)):
+            compute_nodes[i].close()
+
+        ###############<Press Enter to continue...>####################
+        host_address = ["http://0.0.0.0:{}".format(GRID_PORT), "http://0.0.0.0:{}/connected-nodes".format(GRID_PORT), "http://0.0.0.0:{}/search-available-tags".format(GRID_PORT)] + ["http://0.0.0.0:{}".format(i) for i in _ports]
+        print('Go to the following addresses: {}'.format(host_address))
+        input('Press Enter to continue...')
+        ###################################
 
         my_grid = PublicGridNetwork(hook, "http://" + GRID_ADDRESS + ":" + GRID_PORT)
         data = my_grid.search("#X", "#gtex_v8", "#dataset")
-        time.sleep(2)
+        time.sleep(1)
         target = my_grid.search("#Y", "#gtex_v8", "#dataset")
-        time.sleep(2)
+        time.sleep(1)
         data = list(data.values())
         target = list(target.values())
-
-        print(data)
-        print("======")
-        print(target)
 
         device = th.device("cuda:0" if th.cuda.is_available() else "cpu")
 
@@ -63,17 +100,18 @@ class Decentralized:
         model.to(device)
         workers = ['h{}'.format(i+1) for i in range(CLIENTS)]
         print('WORKERS: ', workers)
-        print(1)
         optims = Optims(workers, optim=optim.Adam(params=model.parameters(), lr=0.003))
         # criterion = nn.CrossEntropyLoss()
 
-        for epoch in range(N_EPOCS):
-            print(2)
+        # Metrics dict
+        glob_mod_metadata = dict()
+
+        for epoch in range(N_EPOCHS):
             model.train()
             epoch_total = self.epoch_total_size(data)
             current_epoch_size = 0
+
             for i in range(len(data)):
-                print(3)
                 correct = 0
                 for j in range(len(data[i])):
                     epoch_loss = 0.0
@@ -82,32 +120,25 @@ class Decentralized:
                     current_epoch_size += len(data[i][j])
                     worker = data[i][j].location
                     model.send(worker)
-                    time.sleep(4)
-                    print(4)
 
                     # Call the optimizer for the worker using get_optim
                     opt = optims.get_optim(data[i][j].location.id)
-                    time.sleep(5)
 
                     opt.zero_grad()
                     pred = model(data[i][j])
-                    time.sleep(5)
+
                     loss = F.cross_entropy(pred, target[i][j])
                     loss.backward()
                     opt.step()
-                    print(5)
 
                     # statistics
                     # prob = F.softmax(pred, dim=1)
                     top1 = torch.argmax(pred, dim=1)
                     ncorrect = torch.sum(top1 == target[i][j])
-                    print(6)
 
                     # Get back loss
                     loss = loss.get()
-                    time.sleep(5)
                     ncorrect = ncorrect.get()
-                    time.sleep(5)
 
                     epoch_loss += loss.item()
                     epoch_acc += ncorrect.item()
@@ -116,13 +147,18 @@ class Decentralized:
                     epoch_acc /= target[i][j].shape[0]
 
                     model.get()
-                    time.sleep(5)
 
                     print(
                         'Train Epoch: {} | With {} data |: [{}/{} ({:.0f}%)]\tTrain Loss: {:.6f} | Train Acc: {:.3f}'.format(
                             epoch, worker.id, current_epoch_size, epoch_total,
                             100. * current_epoch_size / epoch_total, epoch_loss, epoch_acc))
 
+                    # Save metrics in dict
+                    glob_mod_metadata['round_{}_{}_results'.format(epoch, worker.id)] = {'accuracy': round(epoch_acc, 4),
+                                                                                'loss': round(epoch_loss, 4)}
+
+
+        return glob_mod_metadata
 
 class Centralized:
     def preprocess(self, datasets, labels):
@@ -141,6 +177,9 @@ class Centralized:
         optimizer = optim.Adam(model.parameters(), lr=0.003)
 
         X, Y = self.preprocess(datasets, labels)
+
+        # Metrics dict
+        glob_mod_metadata = dict()
 
         for e in range(epochs):
             epoch_loss = 0.0
@@ -165,5 +204,10 @@ class Centralized:
             epoch_loss /= Y.shape[0]
             epoch_acc /= Y.shape[0]
 
+
             print(f"Epoch: {e}", f"Training loss: {epoch_loss}", f" | Training Accuracy: {epoch_acc}")
+
+            glob_mod_metadata['epoch_{}'.format(e)] = {'accuracy': np.round(epoch_acc, 4), 'loss': np.round(epoch_loss, 4)}
+
+        return glob_mod_metadata
 
