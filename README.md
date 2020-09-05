@@ -13,7 +13,8 @@
 ## Table of Contents
 - [Requirements](#requirements)
 - [Installation and Initialization](#installation-and-initialization)
-  * [Using Docker](#using-docker)
+- [Local Execution](#local-execution)
+- [Notebooks](#notebooks)
 - [Tutorials / References](#tutorials--references)
 - [GSoC Blog Post](#gsoc-blog-post)
 - [Project Status](#project-status)
@@ -24,7 +25,6 @@
 At the moment, a standard machine with CPUs will work. 
 
 ## Installation and Initialization
-### Using Docker
 - Step 1: Install Docker and pull required images from DockerHub
     1. To install Docker, just follow the [docker documentation](https://docs.docker.com/install/).
     2. Start your `docker daemon`
@@ -36,20 +36,26 @@ At the moment, a standard machine with CPUs will work.
     3. `cd /path/to/srijan-gsoc-2020`
     4. `conda env create -f environment.yml`
     5. `conda activate pysyft_v028` (or `source activate pysyft_v028` for older versions of conda)
-    > NOTE: Some Common Errors -                                                                                                                                                                                                                                                                                                                                                                                                                            
+    > NOTE: Some Common Errors while creating an environment -                                                                                                                                                                                                                                                                                                                                                                                                                            
     > 1. While creating an env. on a linux machine, you may get the following error: `No space left on device`. (refer [here](https://stackoverflow.com/questions/40755610/ioerror-errno-28-no-space-left-on-device-while-installing-tensorflow))                                                                                                                                                                                                                                                                                                                                                                                                         
     > 2. Solution: 
     >   - `export TMPDIR=$HOME/tmp` (i.e. change /tmp directory location)
-    >   - `mkdir -p $TMPDIR` , and then run the following command -
+    >   - `mkdir -p $TMPDIR`
+    >   - `source ~/.bashrc` , and then run the following command -
     >   - `conda env create -f environment.yml`
 - Step 3: Install GTeX `V8` Dataset
+    - Import `samples` and `expressions` data:  
 ```
-dvc get-url https://www.dropbox.com/s/cmxruuqi26zweeq/gtex.zip?dl=1 data/ -v
+dvc import-url https://www.dropbox.com/s/kbx03yz7y1r6kee/v8_samples.parquet?dl=1 data/gtex/ -v
 ```
-- Step 4: Local execution
-    1. Make sure your `docker daemon` is running
-    2. `cd src` and run - 
-        - `python initializer.py`
+```
+dvc import-url https://www.dropbox.com/s/btv2jhk1rwpaplz/v8_expressions.parquet?dl=1 data/gtex/ -v
+```
+
+## Local execution
+1. Make sure your `docker daemon` is running
+2. `cd src` and run - 
+    - `python initializer.py`
 ```     
 Usage: initializer.py [OPTIONS]
 
@@ -60,15 +66,87 @@ Options:
   --dataset_size INTEGER   Size of data for training
   --split_type TEXT        balanced / unbalanced / iid / non_iid
   --split_size FLOAT       Train / Test Split
+  --n_epochs INTEGER       No. of Epochs / Rounds
+  --metrics_path TEXT      Path to save metrics
   --no_of_clients INTEGER  Clients / Nodes for decentralized training
+  --tags TEXT              Give tags for the data, which is to be sent to the nodes
   --node_start_port TEXT   Start port No. for a node
   --grid_address TEXT      grid address for network
   --grid_port TEXT         grid port for network
   --help                   Show this message and exit.
 ```
-- Step 5: Stop running containers
-    - `docker kill $(docker ps -q)`
 
+- `Centralized training` example output, using **2 epochs**:
+```
+python initializer.py --train_type centralized --dataset_size 4000         
+============================================================
+----<DATA PREPROCESSING STARTED..>----
+----<STARTED TRAINING IN A centralized FASHION..>----
+DATASET SIZE: 4000
+Epoch: 0 Training loss: 0.000448  | Training Accuracy: 0.166
+Epoch: 1 Training loss: 0.000447  | Training Accuracy: 0.166
+---<SAVING METRICS.....>----
+============================================================
+OVERALL RUNTIME: 83.436 seconds
+```
+
+- `Decentralized training` example output, using **2 epochs**:
+```
+python initializer.py --train_type decentralized --no_of_clients 4 --dataset_size 4000
+============================================================
+----<DATA PREPROCESSING STARTED..>----
+----<STARTED TRAINING IN A decentralized FASHION..>----
+DATASET SIZE: 4000
+TOTAL CLIENTS: 4
+DATAPOINTS WITH EACH CLIENT: 
+client_h1: 999 ; Label Count: {0: 163, 1: 167, 2: 161, 3: 177, 4: 163, 5: 168}
+client_h2: 999 ; Label Count: {0: 176, 1: 177, 2: 158, 3: 167, 4: 160, 5: 161}
+client_h3: 999 ; Label Count: {0: 191, 1: 161, 2: 168, 3: 157, 4: 156, 5: 166}
+client_h4: 999 ; Label Count: {0: 136, 1: 161, 2: 179, 3: 165, 4: 187, 5: 171}
+---<STARTING DOCKER IMAGE>----
+====DOCKER STARTED!=======
+Go to the following addresses: ['http://0.0.0.0:5000', 'http://0.0.0.0:5000/connected-nodes', 'http://0.0.0.0:5000/search-available-tags', 'http://0.0.0.0:3000', 'http://0.0.0.0:3001', 'http://0.0.0.0:3002', 'http://0.0.0.0:3003']
+Press any Key to continue...
+WORKERS:  ['h1', 'h2', 'h3', 'h4']
+Train Epoch: 0 | With h1 data |: [999/3996 (25%)]       Train Loss: 0.001794 | Train Acc: 0.161
+Train Epoch: 0 | With h3 data |: [1998/3996 (50%)]      Train Loss: 0.001793 | Train Acc: 0.168
+Train Epoch: 0 | With h4 data |: [2997/3996 (75%)]      Train Loss: 0.001794 | Train Acc: 0.179
+Train Epoch: 0 | With h2 data |: [3996/3996 (100%)]     Train Loss: 0.001794 | Train Acc: 0.158
+Train Epoch: 1 | With h1 data |: [999/3996 (25%)]       Train Loss: 0.001793 | Train Acc: 0.161
+Train Epoch: 1 | With h3 data |: [1998/3996 (50%)]      Train Loss: 0.001792 | Train Acc: 0.174
+Train Epoch: 1 | With h4 data |: [2997/3996 (75%)]      Train Loss: 0.001792 | Train Acc: 0.246
+Train Epoch: 1 | With h2 data |: [3996/3996 (100%)]     Train Loss: 0.001791 | Train Acc: 0.198
+---<STOPPING DOCKER NODE/NETWORK CONTAINERS>----
+e35fa27288b5
+c473aa3dc5ad
+3883c9f1ab25
+f3373da1ebcb
+bd5dcfbdaf58
+---<SAVING METRICS.....>----
+============================================================
+OVERALL RUNTIME: 211.788 seconds
+```
+> NOTE: Some errors while training in a decentralized way:
+> - `ImportError: sys.meta_path is None, Python is likely shutting down`
+> - Solution - NOT YET RESOLVED!
+
+## Notebooks
+- STEP 1: `docker-compose -f notebook-docker-compose.yml up`
+- STEP 2: `conda activate pysyft_v028` (or `source activate pysyft_v028` for older versions of conda)
+- STEP 3: Go to the following addresses: 
+```
+['http://0.0.0.0:5000', 'http://0.0.0.0:5000/connected-nodes', 'http://0.0.0.0:5000/search-available-tags', 'http://0.0.0.0:3000', 'http://0.0.0.0:3001']
+```
+- STEP 4: Initialize `jupyter lab`
+- STEP 5: Run data owner notebook: `notebooks/data-owner_GTEx.ipynb`
+- STEP 6: Run model owner notebook: `notebooks/model-owner_GTEx.ipynb`
+- STEP 7: STOP Node/Network running containers:
+```
+docker rm $(docker stop $(docker ps -a -q --filter ancestor=srijanverma44/grid-network:v028 --format="{{.ID}}"))
+```
+```
+docker rm $(docker stop $(docker ps -a -q --filter ancestor=srijanverma44/grid-node:v028 --format="{{.ID}}"))
+```
 ## Tutorials / References
 1. [OpenMined Welcome Page, high level organization and projects](https://github.com/OpenMined/OM-Welcome-Package)
 2. [OpenMined full stack, well explained](https://www.youtube.com/watch?v=NJBBE_SN90A)<br/>
