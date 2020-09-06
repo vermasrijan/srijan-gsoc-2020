@@ -1,0 +1,4 @@
+[core]
+    remote = gtex_data
+['remote "gtex_data"']
+    url = https://www.dropbox.com/sh/5zu0p5wion09xbw/AACXNsVbEQ6wwTAEbJR34c7Na?dl=1
