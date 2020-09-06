@@ -10,6 +10,7 @@
 
 ## Table of Contents
 - [About](#about)
+    - [Intent](#intent)
 - [Requirements](#requirements)
 - [Installation and Initialization](#installation-and-initialization)
 - [Local Execution](#local-execution)
@@ -19,6 +20,7 @@
     - [Decentralized Example](#decentralized-example)
         - [DVC Decentralized Stage](#dvc-decentralized-stage)
     - [Localhosts Example Screenshots](#localhosts-example-screenshots)
+- [Remote Execution](#remote-execution)
 - [Running DVC stages](#running-dvc-stages)
 - [Notebooks](#notebooks)
 - [Tutorials / References](#tutorials--references)
@@ -27,7 +29,16 @@
 - [Acknowledgements](#acknowledgements)
 
 ## About
-- This repo is an introductory project for simulating Federated Learning training, for decentralized biomedical datasets.
+- Quality information exist as islands on gadgets like cell phones and PCs over the globe and are protected by severe security safeguarding laws. <br/>
+- Federated Learning gives an astute methods for associating AI models to these incoherent information paying little heed to their areas, and all the more significantly, without penetrating protection laws.<br/>
+- In biomedical research, sharing and use of human biomedical data is also heavily restricted and regulated by multiple laws. Such data-sharing restrictions allow keeping privacy of the patients but at the same time it impedes the pace of biomedical research, slows down the development of treatments of various diseases and often costs human lives.<br/>
+- COVID-19 pandemic is unfortunately a good illustration of how inaccessibility of clinical training data leads to casualties that can be otherwise avoided.<br/>
+- This repository is devoted to addressing this issue for the most common biomedical use-cases, like gene expression data.
+
+### Intent
+- It is an introductory project for simulating `easy-to-deploy` Federated Learning, for decentralized biomedical datasets.
+    - A user can either simulate FL training locally (using `localhost`), or remotely (on `several machines`). 
+    - A user can also compare centralized vs decentralized train metrics.
 - Technology Stack used: 
     - [OpenMined](https://www.openmined.org/): [PySyft](https://github.com/OpenMined/PySyft), [PyGrid](https://github.com/OpenMined/PyGrid)
     - [DVC](https://dvc.org/)
@@ -48,7 +59,7 @@ At the moment, a standard machine with CPUs will work.
 - Step 2: Install dependencies via conda
     1. Install Miniconda, for your operating system, from [https://conda.io/miniconda.html](https://conda.io/miniconda.html)
     2. `git clone https://github.com/vermasrijan/srijan-gsoc-2020.git`
-    3. `cd /path/to/srijan-gsoc-2020`
+    3. `cd srijan-gsoc-2020`
     4. `conda env create -f environment.yml`
     5. `conda activate pysyft_v028` (or `source activate pysyft_v028` for older versions of conda)
     > NOTE: Some Common Errors while creating an environment -                                                                                                                                                                                                                                                                                                                                                                                                                            
@@ -72,7 +83,7 @@ dvc import-url https://www.dropbox.com/s/btv2jhk1rwpaplz/v8_expressions.parquet?
 ## Local execution
 ### Usage
 - `src/initializer.py` is a python script for initializing either a centralized training, or a decentralized one.
-- This script will create a compose yaml file, initialize `client/network` containers and will execute FL/centralized training.
+- This script will create a compose yaml file, initialize `client/network` containers, execute FL/centralized training and will finally stop running containers (for network/nodes).
 1. Make sure your `docker daemon` is running
 2. Run the following command - 
     - `python src/initializer.py`
@@ -114,19 +125,6 @@ Epoch: 1 Training loss: 0.000447  | Training Accuracy: 0.166
 OVERALL RUNTIME: 83.436 seconds
 ```
 #### DVC Centralized Stage
-```
-dvc run -n centralized_train \
- -d data/gtex/v8_samples.parquet \
- -d data/gtex/v8_expressions.parquet \
- -d src/initializer.py \
- -M data/metrics/centralized_metrics.json \
- python src/initializer.py --train_type \
-centralized --dataset_size 4000 \
---samples_path data/gtex/v8_samples.parquet \
---dataset_size 4000 --expressions_path data/gtex/v8_expressions.parquet \
---metrics_path data/metrics --n_epochs 2
-```
-OR <br/>
 `dvc repro centralized_train`
 
 ### Decentralized Example
@@ -169,19 +167,6 @@ OVERALL RUNTIME: 211.788 seconds
 > - Solution - NOT YET RESOLVED!
 
 #### DVC Decentralized Stage
-```
-dvc run -n decentralized_train \
- -d data/gtex/v8_samples.parquet \
- -d data/gtex/v8_expressions.parquet \
- -d src/initializer.py \
- -M data/metrics/decentralized_metrics.json \
- python src/initializer.py --train_type \
-decentralized --dataset_size 4000 \
---samples_path data/gtex/v8_samples.parquet \
---dataset_size 4000 --expressions_path data/gtex/v8_expressions.parquet \
---metrics_path data/metrics --n_epochs 2 --no_of_clients 4
-```
-OR <br/>
 `dvc repro decentralized_train`
 
 ### Localhosts Example Screenshots
@@ -193,6 +178,9 @@ OR <br/>
     - ![](data/images/search_available_tags.png)
 4. Following is what you may see at http://0.0.0.0:3000
     - ![](data/images/grid_node.png)
+
+## Remote Execution
+- add_info
 
 ## Running DVC stages
 - DVC stages are in `dvc.yaml` file, to run dvc stage just use `dvc repro <stage_name>`
