@@ -19,6 +19,7 @@
         - [DVC Centralized Stage](#dvc-centralized-stage)
     - [Decentralized Example](#decentralized-example)
         - [DVC Decentralized Stage](#dvc-decentralized-stage)
+    - [Metrics](#metrics)
     - [Localhosts Example Screenshots](#localhosts-example-screenshots)
 - [Remote Execution](#remote-execution)
 - [Running DVC stages](#running-dvc-stages)
@@ -168,6 +169,11 @@ OVERALL RUNTIME: 211.788 seconds
 
 #### DVC Decentralized Stage
 `dvc repro decentralized_train`
+
+### Metrics
+
+> - NOTE: By default, metrics will be saved in `data/metrics` directory. 
+> - You can pass in the `--metrics_path <path>` flag to change the default directory.
 
 ### Localhosts Example Screenshots
 1. Following is what you may see at http://0.0.0.0:5000
