@@ -20,6 +20,7 @@
     - [Decentralized Example](#decentralized-example)
         - [DVC Decentralized Stage](#dvc-decentralized-stage)
     - [Metrics](#metrics)
+    - [Hyperparameter Optimization](#hyperparameter-optimization)
     - [Localhosts Example Screenshots](#localhosts-example-screenshots)
 - [Remote Execution](#remote-execution)
 - [Running DVC stages](#running-dvc-stages)
@@ -171,9 +172,11 @@ OVERALL RUNTIME: 211.788 seconds
 `dvc repro decentralized_train`
 
 ### Metrics
+- NOTE: By default, metrics will be saved in `data/metrics` directory. 
+- You can pass in the `--metrics_path <path>` flag to change the default directory.
 
-> - NOTE: By default, metrics will be saved in `data/metrics` directory. 
-> - You can pass in the `--metrics_path <path>` flag to change the default directory.
+### Hyperparameter Optimization
+- CODE_IN_PROGRESS!
 
 ### Localhosts Example Screenshots
 1. Following is what you may see at http://0.0.0.0:5000
@@ -186,7 +189,7 @@ OVERALL RUNTIME: 211.788 seconds
     - ![](data/images/grid_node.png)
 
 ## Remote Execution
-- add_info
+- ADD_INFO!
 
 ## Running DVC stages
 - DVC stages are in `dvc.yaml` file, to run dvc stage just use `dvc repro <stage_name>`
