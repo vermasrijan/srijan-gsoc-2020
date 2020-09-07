@@ -10,6 +10,9 @@ import time
 from syft.grid.clients.data_centric_fl_client import DataCentricFLClient
 import numpy as np
 
+DATA_SEND_TIME = 2
+DATA_SEARCH_TIME = 1
+
 class Net(nn.Module):
     '''
     Hyperparameters for centralized / decentralized models
@@ -76,11 +79,7 @@ class Decentralized:
         for i in range(len(compute_nodes)):
             x_dataset.append(tag_input[i].send(compute_nodes[i]))  # First chunk of dataset to h1
             y_dataset.append(tag_label[i].send(compute_nodes[i]))  # First chunk of labels to h1
-            time.sleep(2)
-            # print("X tensor pointer: ", x_dataset[-1])
-            # print("Y tensor pointer: ", y_dataset[-1])
-
-        time.sleep(2)
+            time.sleep(DATA_SEND_TIME)
 
         for i in range(len(compute_nodes)):
             compute_nodes[i].close()
@@ -89,13 +88,15 @@ class Decentralized:
         host_address = ["http://0.0.0.0:{}".format(GRID_PORT), "http://0.0.0.0:{}/connected-nodes".format(GRID_PORT), "http://0.0.0.0:{}/search-available-tags".format(GRID_PORT)] + ["http://0.0.0.0:{}".format(i) for i in _ports]
         print('Go to the following addresses: {}'.format(host_address))
         input('Press Enter to continue...')
-        ###################################
+        ###############################################################
 
         my_grid = PublicGridNetwork(hook, "http://" + GRID_ADDRESS + ":" + GRID_PORT)
         data = my_grid.search("#X", "#gtex_v8", "#dataset")
-        time.sleep(1)
+        time.sleep(DATA_SEARCH_TIME)
+
         target = my_grid.search("#Y", "#gtex_v8", "#dataset")
-        time.sleep(1)
+        time.sleep(DATA_SEARCH_TIME)
+
         data = list(data.values())
         target = list(target.values())
 
