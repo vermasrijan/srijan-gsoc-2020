@@ -51,7 +51,7 @@ class Decentralized:
 
         return total
 
-    def train_distributed(self, _ports, datasets, labels, GRID_ADDRESS='0.0.0.0', GRID_PORT='5000', N_EPOCHS=20, CLIENTS=None,SAVE_MODEL=False, SAVE_MODEL_PATH='./models'):
+    def train_distributed(self, _ports, datasets, labels, GRID_ADDRESS='0.0.0.0', GRID_PORT='5000', N_EPOCHS=20, CLIENTS=None,SAVE_MODEL=False, SAVE_MODEL_PATH='./models', NO_CUDA=True):
 
         # Send Data
         hook = sy.TorchHook(th)
@@ -100,10 +100,21 @@ class Decentralized:
         data = list(data.values())
         target = list(target.values())
 
-        device = th.device("cuda:0" if th.cuda.is_available() else "cpu")
+        if NO_CUDA:
+            device = th.device("cpu")
+            CUDA_LOG = 'CPU'
 
-        if (th.cuda.is_available()):
+        elif (not NO_CUDA) and th.cuda.is_available():
+            device = th.device("cuda:0")
             th.set_default_tensor_type(th.cuda.FloatTensor)
+            CUDA_LOG = 'CUDA'
+
+        print("-------<USING {} FOR TRAINING>-------".format(CUDA_LOG))
+
+        # device = th.device("cuda:0" if th.cuda.is_available() else "cpu")
+        #
+        # if (th.cuda.is_available()):
+        #     th.set_default_tensor_type(th.cuda.FloatTensor)
 
         model = Net()
         model.to(device)

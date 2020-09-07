@@ -23,13 +23,14 @@ import click
 @click.option('--metrics_file_name', default=None, help="Custom name for metrics file")
 @click.option('--no_of_clients', default=2, help="Clients / Nodes for decentralized training")
 @click.option('--swarm', default='no', help="Option for switching between docker compose vs docker stack")
+@click.option('--no_cuda', default=True, help="no_cuda = True means not to use CUDA. Default --> use CPU")
 @click.option('--tags', default=None, help="Give tags for the data, which is to be sent to the nodes")
 @click.option('--node_start_port', default='3000', help="Start port No. for a node")
 @click.option('--grid_address', default='0.0.0.0', help="grid address for network")
 @click.option('--grid_port', default='5000', help="grid port for network")
 
 
-def main(samples_path, expressions_path, train_type, dataset_size, no_of_clients, grid_port, grid_address, metrics_path, n_epochs, split_type, metrics_file_name, swarm, model_save_path, split_size, node_start_port, tags):
+def main(samples_path, expressions_path, train_type, dataset_size, no_of_clients, grid_port, grid_address, metrics_path, n_epochs, split_type, metrics_file_name, swarm, no_cuda, model_save_path, split_size, node_start_port, tags):
 
     print('='*60)
 
@@ -84,7 +85,7 @@ def main(samples_path, expressions_path, train_type, dataset_size, no_of_clients
             prepro.docker_initializer(SWARM=swarm)
 
             decentralized_ob = Decentralized()
-            metrics_dict = decentralized_ob.train_distributed(_ports, datasets, labels, CLIENTS=no_of_clients, GRID_ADDRESS=GRID_ADDRESS, GRID_PORT=GRID_PORT, N_EPOCHS=n_epochs)
+            metrics_dict = decentralized_ob.train_distributed(_ports, datasets, labels, CLIENTS=no_of_clients, GRID_ADDRESS=GRID_ADDRESS, GRID_PORT=GRID_PORT, N_EPOCHS=n_epochs, NO_CUDA=no_cuda)
 
             prepro.docker_kill()
 
