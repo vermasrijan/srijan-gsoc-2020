@@ -15,6 +15,8 @@ import json
 
 NETWORK_IMAGE = 'srijanverma44/grid-network:v028'
 NODE_IMAGE = 'srijanverma44/grid-node:v028'
+DOCKER_START_TIME = 10
+DATA_SEND_TIME = 2
 
 class Preprocess:
 
@@ -72,27 +74,36 @@ class Preprocess:
 
         return _ports
 
-    def docker_initializer(self):
-        cmd = ['docker-compose', '-f', 'docker-compose.yml', 'up', '-d']
+    def docker_initializer(self, SWARM = 'no'):
+
+        # For switching between compose & stack
+        if SWARM == 'no':
+            cmd = ['docker-compose', '-f', 'docker-compose.yml', 'up', '-d']
+        elif SWARM == 'yes':
+            cmd = ['docker', 'stack', 'deploy']
+
 
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         print('---<STARTING DOCKER IMAGE>----')
         out, error = p.communicate()
         print('====DOCKER STARTED!=======')
-        time.sleep(10)
+        time.sleep(DOCKER_START_TIME)
 
     def docker_kill(self):
         print('---<STOPPING DOCKER NODE/NETWORK CONTAINERS>----')
         os.system('docker rm $(docker stop $(docker ps -a -q --filter ancestor=srijanverma44/grid-node:v028 --format="{{.ID}}"))')
-        time.sleep(3)
         os.system('docker rm $(docker stop $(docker ps -a -q --filter ancestor=srijanverma44/grid-network:v028 --format="{{.ID}}"))')
 
-    def save_metrics(self, metrics_dict, metrics_path, train_type):
+    def save_metrics(self, metrics_dict, metrics_path, train_type, metrics_file_name):
 
         # Save metrics in metadata
         print('---<SAVING METRICS.....>----')
-        with open(metrics_path + '/{}_metrics.json'.format(train_type), 'w') as f:
-            json.dump(metrics_dict, f, indent=4)
+        if metrics_file_name is not None:
+            with open(metrics_path + '/' + metrics_file_name + '.json', 'w') as f:
+                json.dump(metrics_dict, f, indent=4)
+        else:
+            with open(metrics_path + '/{}_metrics.json'.format(train_type), 'w') as f:
+                json.dump(metrics_dict, f, indent=4)
 
 
 class DataSender:
@@ -128,15 +139,9 @@ class DataSender:
         for i in range(len(compute_nodes)):
             x_dataset.append(tag_input[i].send(compute_nodes[i]))  # First chunk of dataset to h1
             y_dataset.append(tag_label[i].send(compute_nodes[i]))  # First chunk of labels to h1
-            time.sleep(2)
-            print("X tensor pointer: ", x_dataset[-1])
-            print("Y tensor pointer: ", y_dataset[-1])
-
-        time.sleep(15)
+            time.sleep(DATA_SEND_TIME)
 
         for i in range(len(compute_nodes)):
             compute_nodes[i].close()
-
-        time.sleep(5)
 
 
