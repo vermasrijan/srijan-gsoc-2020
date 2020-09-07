@@ -11,7 +11,6 @@
 ## Table of Contents
 - [About](#about)
     - [Intent](#intent)
-- [Requirements](#requirements)
 - [Installation and Initialization](#installation-and-initialization)
 - [Local Execution](#local-execution)
     - [Usage](#usage)
@@ -20,11 +19,13 @@
     - [Decentralized Example](#decentralized-example)
         - [DVC Decentralized Stage](#dvc-decentralized-stage)
     - [Metrics](#metrics)
-    - [Hyperparameter Optimization](#hyperparameter-optimization)
     - [Localhosts Example Screenshots](#localhosts-example-screenshots)
 - [Remote Execution](#remote-execution)
+    - [Server Side](#server-side)
+    - [Client Side](#client-side)
 - [Running DVC stages](#running-dvc-stages)
 - [Notebooks](#notebooks)
+- [Hyperparameter Optimization](#hyperparameter-optimization)
 - [Tutorials / References](#tutorials--references)
 - [GSoC Blog Post](#gsoc-blog-post)
 - [Project Status](#project-status)
@@ -48,11 +49,9 @@
     - [Docker](https://www.docker.com/)
 - Example Dataset used:
     - [GTEx](https://gtexportal.org/home/): The Common Fund's Genotype-Tissue Expression (GTEx) Program established a data resource and tissue bank to study the relationship between genetic variants (inherited changes in DNA sequence) and gene expression (how genes are turned on and off) in multiple human tissues and across individuals.
-## Requirements
-
-At the moment, a standard machine with CPUs will work. 
 
 ## Installation and Initialization
+> - NOTE: All the testing has been done on a MacOS / Linux based system
 - Step 1: Install Docker and pull required images from DockerHub
     1. To install Docker, just follow the [docker documentation](https://docs.docker.com/install/).
     2. Start your `docker daemon`
@@ -72,15 +71,14 @@ At the moment, a standard machine with CPUs will work.
     >   - `source ~/.bashrc` , and then run the following command -
     >   - `conda env create -f environment.yml`
 - Step 3: Install [GTEx](https://gtexportal.org/home/) `V8` Dataset
-    - Import `samples` and `expressions` data:  
+    - Pull `samples` and `expressions` data:  
 ```
-dvc import-url https://www.dropbox.com/s/kbx03yz7y1r6kee/v8_samples.parquet?dl=1 data/gtex/ -v
+dvc pull data/gtex/v8_samples.parquet.dvc -v
 ```
 ```
-dvc import-url https://www.dropbox.com/s/btv2jhk1rwpaplz/v8_expressions.parquet?dl=1 data/gtex/ -v
+dvc pull data/gtex/v8_expressions.parquet.dvc -v
 ```
  - The above commands will download GTEx data inside `data/gtex` directory. 
-> NOTE: `.dvc` files will be generated as well.
 
 ## Local execution
 ### Usage
@@ -112,19 +110,23 @@ Options:
 ### Centralized Example
 - Example command:
 ```
-python src/initializer.py --train_type centralized --dataset_size 4000        
+python src/initializer.py --train_type centralized --dataset_size 17000 --n_epochs 50        
 ```
 - `Centralized training` example output, using **2 epochs**:
 ``` 
 ============================================================
 ----<DATA PREPROCESSING STARTED..>----
 ----<STARTED TRAINING IN A centralized FASHION..>----
-DATASET SIZE: 4000
-Epoch: 0 Training loss: 0.000448  | Training Accuracy: 0.166
-Epoch: 1 Training loss: 0.000447  | Training Accuracy: 0.166
+DATASET SIZE: 17000
+Epoch: 0 Training loss: 0.00010540  | Training Accuracy: 0.1666
+Epoch: 1 Training loss: 0.00010540  | Training Accuracy: 0.1669
+.
+.
+Epoch: 48 Training loss: 9.3619e-05  | Training Accuracy: 0.4356
+Epoch: 49 Training loss: 9.3567e-05  | Training Accuracy: 0.4359
 ---<SAVING METRICS.....>----
 ============================================================
-OVERALL RUNTIME: 83.436 seconds
+OVERALL RUNTIME: 43.217 seconds
 ```
 #### DVC Centralized Stage
 `dvc repro centralized_train`
@@ -132,37 +134,38 @@ OVERALL RUNTIME: 83.436 seconds
 ### Decentralized Example
 - Example command:
 ```
-python src/initializer.py --train_type decentralized --no_of_clients 4 --dataset_size 4000      
+python src/initializer.py --train_type decentralized --dataset_size 17000 --n_epochs 50 --no_of_clients 2     
 ```
 - `Decentralized training` example output, using **2 epochs**:
 ```
 ============================================================
 ----<DATA PREPROCESSING STARTED..>----
 ----<STARTED TRAINING IN A decentralized FASHION..>----
-DATASET SIZE: 4000
-TOTAL CLIENTS: 4
-DATAPOINTS WITH EACH CLIENT: 
-client_h1: 999 ; Label Count: {0: 163, 1: 167, 2: 161, 3: 177, 4: 163, 5: 168}
-client_h2: 999 ; Label Count: {0: 176, 1: 177, 2: 158, 3: 167, 4: 160, 5: 161}
-client_h3: 999 ; Label Count: {0: 191, 1: 161, 2: 168, 3: 157, 4: 156, 5: 166}
-client_h4: 999 ; Label Count: {0: 136, 1: 161, 2: 179, 3: 165, 4: 187, 5: 171}
+DATASET SIZE: 17000
+TOTAL CLIENTS: 2
+DATAPOINTS WITH EACH CLIENT:
+client_h1: 8499 ; Label Count: {0: 1445, 1: 1438, 2: 1429, 3: 1432, 4: 1394, 5: 1361}
+client_h2: 8499 ; Label Count: {0: 1388, 1: 1395, 2: 1404, 3: 1401, 4: 1439, 5: 1472}
 ---<STARTING DOCKER IMAGE>----
 ====DOCKER STARTED!=======
-Go to the following addresses: ['http://0.0.0.0:5000', 'http://0.0.0.0:5000/connected-nodes', 'http://0.0.0.0:5000/search-available-tags', 'http://0.0.0.0:3000', 'http://0.0.0.0:3001', 'http://0.0.0.0:3002', 'http://0.0.0.0:3003']
-Press any Key to continue...
-WORKERS:  ['h1', 'h2', 'h3', 'h4']
-Train Epoch: 0 | With h1 data |: [999/3996 (25%)]       Train Loss: 0.001794 | Train Acc: 0.161
-Train Epoch: 0 | With h3 data |: [1998/3996 (50%)]      Train Loss: 0.001793 | Train Acc: 0.168
-Train Epoch: 0 | With h4 data |: [2997/3996 (75%)]      Train Loss: 0.001794 | Train Acc: 0.179
-Train Epoch: 0 | With h2 data |: [3996/3996 (100%)]     Train Loss: 0.001794 | Train Acc: 0.158
-Train Epoch: 1 | With h1 data |: [999/3996 (25%)]       Train Loss: 0.001793 | Train Acc: 0.161
-Train Epoch: 1 | With h3 data |: [1998/3996 (50%)]      Train Loss: 0.001792 | Train Acc: 0.174
-Train Epoch: 1 | With h4 data |: [2997/3996 (75%)]      Train Loss: 0.001792 | Train Acc: 0.246
-Train Epoch: 1 | With h2 data |: [3996/3996 (100%)]     Train Loss: 0.001791 | Train Acc: 0.198
+Go to the following addresses: ['http://0.0.0.0:5000', 'http://0.0.0.0:5000/connected-nodes', 'http://0.0.0.0:5000/search-available-tags', 'http://0.0.0.0:3000', 'http://0.0.0.0:3001']
+Press Enter to continue...
+WORKERS:  ['h1', 'h2']
+Train Epoch: 0 | With h2 data |: [8499/16998 (50%)]	    Train Loss: 0.000211 | Train Acc: 0.164
+Train Epoch: 0 | With h1 data |: [16998/16998 (100%)]	Train Loss: 0.000211 | Train Acc: 0.192
+Train Epoch: 1 | With h2 data |: [8499/16998 (50%)]	    Train Loss: 0.000211 | Train Acc: 0.172
+Train Epoch: 1 | With h1 data |: [16998/16998 (100%)]	Train Loss: 0.000211 | Train Acc: 0.229
+.
+.
+Train Epoch: 49 | With h2 data |: [8499/16998 (50%)]	Train Loss: 0.000187 | Train Acc: 0.384
+Train Epoch: 49 | With h1 data |: [16998/16998 (100%)]	Train Loss: 0.000187 | Train Acc: 0.389
 ---<STOPPING DOCKER NODE/NETWORK CONTAINERS>----
+381c4f79fb5c
+c203c2f6fd62
+1d3ccce7f732
 ---<SAVING METRICS.....>----
 ============================================================
-OVERALL RUNTIME: 211.788 seconds
+OVERALL RUNTIME: 380.418 seconds
 ```
 > NOTE: Some errors while training in a decentralized way:
 > - `ImportError: sys.meta_path is None, Python is likely shutting down`
@@ -175,9 +178,6 @@ OVERALL RUNTIME: 211.788 seconds
 - NOTE: By default, metrics will be saved in `data/metrics` directory. 
 - You can pass in the `--metrics_path <path>` flag to change the default directory.
 
-### Hyperparameter Optimization
-- CODE_IN_PROGRESS!
-
 ### Localhosts Example Screenshots
 1. Following is what you may see at http://0.0.0.0:5000
     - ![](data/images/open_network.png)
@@ -189,12 +189,18 @@ OVERALL RUNTIME: 211.788 seconds
     - ![](data/images/grid_node.png)
 
 ## Remote Execution
-- ADD_INFO!
-
+> - Make sure all Firewalls are disabled on both, client and server side.
+### Server Side
+- abc
+### Client Side
+- abc
+> - NOTE: Remote execution has not been tested properly. You
+>
 ## Running DVC stages
 - DVC stages are in `dvc.yaml` file, to run dvc stage just use `dvc repro <stage_name>`
 
 ## Notebooks
+> - 
 - STEP 1: `docker-compose -f notebook-docker-compose.yml up`
 - STEP 2: `conda activate pysyft_v028` (or `source activate pysyft_v028` for older versions of conda)
 - STEP 3: Go to the following addresses: 
@@ -212,9 +218,10 @@ docker rm $(docker stop $(docker ps -a -q --filter ancestor=srijanverma44/grid-n
 docker rm $(docker stop $(docker ps -a -q --filter ancestor=srijanverma44/grid-node:v028 --format="{{.ID}}"))
 ```
 > __NOTE__: 
-> 1. Notebooks given in this repository have been taken from this [branch](https://github.com/OpenMined/PySyft/tree/master/examples/tutorials) and have been modified.
-> 2. Testing of these notebooks has been done on a MacOS / Linux based system
+> - Notebooks given in this repository have been taken from this [branch](https://github.com/OpenMined/PySyft/tree/master/examples/tutorials) and have been modified.
 
+## Hyperparameter Optimization
+- CODE_IN_PROGRESS!
 
 ## Tutorials / References
 1. [OpenMined Welcome Page, high level organization and projects](https://github.com/OpenMined/OM-Welcome-Package)
