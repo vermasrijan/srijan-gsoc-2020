@@ -1,0 +1,3 @@
+outs:
+- md5: 05e795a4b29fb1c537240cf55d711a3a
+  path: v8_samples.parquet
