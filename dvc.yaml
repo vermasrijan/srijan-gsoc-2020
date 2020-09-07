@@ -22,3 +22,26 @@ stages:
     metrics:
     - data/metrics/decentralized_metrics.json:
         cache: false
+  centralized_test:
+    cmd: python src/initializer.py --train_type centralized --dataset_size 400 --samples_path
+      data/gtex/v8_samples.parquet --dataset_size 400 --expressions_path data/gtex/v8_expressions.parquet
+      --metrics_path data/metrics --n_epochs 2 --metrics_file_name test_metrics1
+    deps:
+    - data/gtex/v8_expressions.parquet
+    - data/gtex/v8_samples.parquet
+    - src/initializer.py
+    metrics:
+    - data/metrics/test_metrics1.json:
+        cache: false
+  decentralized_test:
+    cmd: python src/initializer.py --train_type decentralized --dataset_size 400 --samples_path
+      data/gtex/v8_samples.parquet --no_of_clients 2 --dataset_size 400 --expressions_path
+      data/gtex/v8_expressions.parquet --metrics_path data/metrics --n_epochs 2 --metrics_file_name
+      test_metrics2
+    deps:
+    - data/gtex/v8_expressions.parquet
+    - data/gtex/v8_samples.parquet
+    - src/initializer.py
+    metrics:
+    - data/metrics/test_metrics2.json:
+        cache: false
