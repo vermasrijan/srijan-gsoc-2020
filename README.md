@@ -244,14 +244,14 @@ dvc repro decentralized_test
 1. While creating an environment:                                                                                                                                                                                                                                                                                                                                                                                                                           
     - While creating an env. on a linux machine, you may get the following error: `No space left on device`. (refer [here](https://stackoverflow.com/questions/40755610/ioerror-errno-28-no-space-left-on-device-while-installing-tensorflow))                                                                                                                                                                                                                                                                                                                                                                                                         
     - Solution: 
-    - `export TMPDIR=$HOME/tmp` (i.e. change /tmp directory location)
-    - `mkdir -p $TMPDIR`
-    - `source ~/.bashrc` , and then run the following command -
-    - `conda env create -f environment.yml`
+        - `export TMPDIR=$HOME/tmp` (i.e. change /tmp directory location)
+        - `mkdir -p $TMPDIR`
+        - `source ~/.bashrc` , and then run the following command -
+        - `conda env create -f environment.yml`
 2. While training:
     - Some errors while training in a decentralized way:
-    - `ImportError: sys.meta_path is None, Python is likely shutting down`
-    - Solution - NOT YET RESOLVED!
+        - `ImportError: sys.meta_path is None, Python is likely shutting down`
+        - Solution - NOT YET RESOLVED!
 3. Notebooks:
     - Data `transmission rate` (i.e, sending large-sized tensors to the nodes) may be slow. (refer [this](https://github.com/OpenMined/PySyft/issues/3539))
 
