@@ -11,6 +11,7 @@
 ## Table of Contents
 - [About](#about)
     - [Intent](#intent)
+    - [GSoC Blog Post](#gsoc-blog-post)
 - [Installation and Initialization](#installation-and-initialization)
 - [Local Execution](#local-execution)
     - [Usage](#usage)
@@ -29,7 +30,6 @@
 - [Testing](#testing)
 - [Known Issues](#known-issues)
 - [Tutorials / References](#tutorials--references)
-- [GSoC Blog Post](#gsoc-blog-post)
 - [Project Status](#project-status)
 - [Acknowledgements](#acknowledgements)
 
@@ -51,6 +51,9 @@
     - [Docker](https://www.docker.com/)
 - Example Dataset used:
     - [GTEx](https://gtexportal.org/home/): The Common Fund's Genotype-Tissue Expression (GTEx) Program established a data resource and tissue bank to study the relationship between genetic variants (inherited changes in DNA sequence) and gene expression (how genes are turned on and off) in multiple human tissues and across individuals.
+
+### GSoC Blog Post
+- [GSoC Journey 2020](https://medium.com/@verma.srijan/gsoc-journey-2020-12e806fc80c3)
 
 ## Installation and Initialization
 > - NOTE: All the testing has been done on a MacOS / Linux based system
@@ -152,6 +155,7 @@ client_h2: 8499 ; Label Count: {0: 1388, 1: 1395, 2: 1404, 3: 1401, 4: 1439, 5: 
 ====DOCKER STARTED!=======
 Go to the following addresses: ['http://0.0.0.0:5000', 'http://0.0.0.0:5000/connected-nodes', 'http://0.0.0.0:5000/search-available-tags', 'http://0.0.0.0:3000', 'http://0.0.0.0:3001']
 Press Enter to continue...
+-------<USING CPU FOR TRAINING>-------
 WORKERS:  ['h1', 'h2']
 Train Epoch: 0 | With h2 data |: [8499/16998 (50%)]	    Train Loss: 0.000211 | Train Acc: 0.164
 Train Epoch: 0 | With h1 data |: [16998/16998 (100%)]	Train Loss: 0.000211 | Train Acc: 0.192
@@ -262,9 +266,6 @@ dvc repro decentralized_test
 4. [PyGrid reorganization RoadMap](https://github.com/OpenMined/Roadmap/blob/master/web_and_mobile_team/projects/common/pygrid_reorganization.md)<br/>
 5. [OpenMined FL roadmap and other terminologies](https://github.com/OpenMined/Roadmap/blob/master/web_and_mobile_team/projects/federated_learning.md)
 6. [What is PyGrid demo](https://blog.openmined.org/what-is-pygrid-demo/)
-
-## GSoC Blog Post
-- [GSoC Journey 2020](https://medium.com/@verma.srijan/gsoc-journey-2020-12e806fc80c3)
 
 ## Project Status
 **Under Development:** Please note that the project is in its early development stage and all the features have not been tested yet.
