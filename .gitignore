@@ -12,6 +12,8 @@ notebooks/GTEx_V8_preprocess.ipynb
 notebooks/model-owner_GTEx-test.ipynb
 data/metrics/centralized_metrics.json
 data/metrics/decentralized_metrics.json
+data/metrics/test_metrics1.json
+data/metrics/test_metrics2.json
 
 # Docker
 docker-compose.yml
