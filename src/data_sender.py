@@ -13,7 +13,14 @@ import numpy as np
 import os
 import json
 
+NETWORK_IMAGE = 'srijanverma44/grid-network:v028'
+NODE_IMAGE = 'srijanverma44/grid-node:v028'
+
 class Preprocess:
+
+    '''
+    Class for conversion to tensor, docker initializer & docker stop
+    '''
 
     def tensor_converter(self, a):
         datasets = []
@@ -40,7 +47,7 @@ class Preprocess:
     def docker_compose_generator(self, n):
 
         doc = {'version': '3',
-               'services': {'network': {'image': 'srijanverma44/grid-network:v028',
+               'services': {'network': {'image': NETWORK_IMAGE,
                                         'environment': ['PORT=5000',
                                                         'SECRET_KEY=ineedtoputasecrethere',
                                                         'DATABASE_URL=sqlite:///databasenetwork.db'],
@@ -50,7 +57,7 @@ class Preprocess:
 
         for i in range(n):
             doc['services'].update(
-                {'h{}'.format(i + 1): {'image': 'srijanverma44/grid-node:v028',
+                {'h{}'.format(i + 1): {'image': NODE_IMAGE,
                                        'environment': ['NODE_ID=h{}'.format(i + 1),
                                                        'ADDRESS=http://h{0}:{1}/'.format(i + 1, _ports[i]),
                                                        'PORT={}'.format(_ports[i]),
@@ -89,6 +96,10 @@ class Preprocess:
 
 
 class DataSender:
+    '''
+    Class for sending data to nodes
+    '''
+
     def send_client_data(self, _ports, datasets, labels):
         hook = sy.TorchHook(torch)
 

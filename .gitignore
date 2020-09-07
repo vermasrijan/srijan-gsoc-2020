@@ -6,6 +6,8 @@ data/balanced/numpy_files/*
 notebooks/GTEx_V8_NN_original.ipynb
 notebooks/data-owner_GTEx-test.ipynb
 notebooks/GTEx_V8_preprocess-test.ipynb
+notebooks/data-owner_client.ipynb
+notebooks/model-owner_third-party.ipynb
 notebooks/GTEx_V8_preprocess.ipynb
 notebooks/model-owner_GTEx-test.ipynb
 data/metrics/centralized_metrics.json

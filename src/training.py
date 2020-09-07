@@ -11,6 +11,10 @@ from syft.grid.clients.data_centric_fl_client import DataCentricFLClient
 import numpy as np
 
 class Net(nn.Module):
+    '''
+    Hyperparameters for centralized / decentralized models
+    '''
+
     def __init__(self):
         super(Net, self).__init__()
 
@@ -31,6 +35,10 @@ class Net(nn.Module):
 
 
 class Decentralized:
+    '''
+    Class for decentralized training
+    '''
+
 
     def epoch_total_size(self, data):
         total = 0
@@ -161,6 +169,10 @@ class Decentralized:
         return glob_mod_metadata
 
 class Centralized:
+    '''
+    Class for centralized training
+    '''
+
     def preprocess(self, datasets, labels):
         # Concatenate
         X, Y = datasets[0], labels[0]

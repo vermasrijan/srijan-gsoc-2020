@@ -56,17 +56,6 @@ class Genes:
 
         return self.Y
 
-    def delete_particular_age_examples(self):
-        df_series = pd.DataFrame(self.labels["Age"])
-        indexes_of_50 = np.where(df_series["Age"] == '50-59')[0].tolist()[300:]
-        indexes_of_60 = np.where(df_series["Age"] == '60-69')[0].tolist()[300:]
-        indexes_of_20 = np.where(df_series["Age"] == '20-29')[0].tolist()[300:]
-        indexes_of_30 = np.where(df_series["Age"] == '30-39')[0].tolist()[300:]
-        indexes_of_40 = np.where(df_series["Age"] == '40-49')[0].tolist()[300:]
-        indexes_to_delete = indexes_of_50 + indexes_of_60 + indexes_of_20 + indexes_of_30 + indexes_of_40
-
-        return indexes_to_delete
-
     def sex_output(self, model):
         return Dense(units=self.Y.sex.shape[1], activation='softmax', name='sex_output')(model)
 
@@ -145,6 +134,10 @@ class Genes:
 
 
 class ClientGenerator:
+    '''
+    Class which will generate clients.
+    Return: a dict with client names as keys, and values in the form of a tuple (X, Y)
+    '''
 
     def balanced_sample_maker(self, X, y, sample_size, random_seed=None):
         """ return a balanced data set by sampling all classes with sample_size
