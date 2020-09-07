@@ -1,0 +1,12 @@
+version: '3'
+services:
+  h1:
+    image: srijanverma44/grid-node:v028
+    environment:
+      - NODE_ID=h1
+      - ADDRESS=http://h1:3000/
+      - PORT=3000
+      - NETWORK=http://network:5000
+      - DATABASE_URL=sqlite:///databasenode.db
+    ports:
+      - 3000:3000
