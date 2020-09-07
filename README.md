@@ -71,15 +71,13 @@
     4. `conda env create -f environment.yml`
     5. `conda activate pysyft_v028` (or `source activate pysyft_v028` for older versions of conda)
 - Step 3: Install [GTEx](https://gtexportal.org/home/) `V8` Dataset
-    - Pull `samples` and `expressions` data:  
+    - Pull `samples` and `expressions` data using the following command:  
 ```
-dvc pull data/gtex/v8_samples.parquet.dvc -v
+dvc pull
 ```
-```
-dvc pull data/gtex/v8_expressions.parquet.dvc -v
-```
-> - The above two commands will download GTEx data inside `data/gtex` directory, from Google Drive remote repository.
-> - Initially, may be prompted to enter a verification code. For that, go to the URL which may be displayed on your CLI, copy the code, paste it at CLI and press Enter. (For more info, refer [1](https://dvc.org/doc/command-reference/pull) & [2](https://dvc.org/doc/user-guide/setup-google-drive-remote))
+> - The above command will download GTEx `samples + expressions` data inside `data/gtex` directory, from Google Drive remote repository.
+> - Initially, you may be prompted to enter a verification code, i.e., you'll have to give DVC an access to your Google Drive API. 
+> - For that, go to the URL which may be displayed on your CLI, copy the code, paste it at CLI and press Enter. (For more info, refer [1](https://dvc.org/doc/command-reference/pull) & [2](https://dvc.org/doc/user-guide/setup-google-drive-remote))
  
 ## Local execution
 ### Usage
