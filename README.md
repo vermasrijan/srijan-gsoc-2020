@@ -104,6 +104,7 @@ Options:
   --metrics_file_name TEXT  Custom name for metrics file
   --no_of_clients INTEGER   Clients / Nodes for decentralized training
   --swarm TEXT              Option for switching between docker compose vs docker stack
+  --no_cuda TEXT            no_cuda = True means not to use CUDA. Default --> use CPU
   --tags TEXT               Give tags for the data, which is to be sent to the nodes
   --node_start_port TEXT    Start port No. for a node
   --grid_address TEXT       grid address for network
