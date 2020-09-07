@@ -14,9 +14,9 @@
 - [Installation and Initialization](#installation-and-initialization)
 - [Local Execution](#local-execution)
     - [Usage](#usage)
-    - [Centralized Example](#centralized-example)
+    - [Centralized Training](#centralized-training)
         - [DVC Centralized Stage](#dvc-centralized-stage)
-    - [Decentralized Example](#decentralized-example)
+    - [Decentralized Training](#decentralized-training)
         - [DVC Decentralized Stage](#dvc-decentralized-stage)
     - [Metrics](#metrics)
     - [Localhosts Example Screenshots](#localhosts-example-screenshots)
@@ -26,6 +26,8 @@
 - [Running DVC stages](#running-dvc-stages)
 - [Notebooks](#notebooks)
 - [Hyperparameter Optimization](#hyperparameter-optimization)
+- [Testing](#testing)
+- [Known Issues](#known-issues)
 - [Tutorials / References](#tutorials--references)
 - [GSoC Blog Post](#gsoc-blog-post)
 - [Project Status](#project-status)
@@ -52,24 +54,19 @@
 
 ## Installation and Initialization
 > - NOTE: All the testing has been done on a MacOS / Linux based system
-- Step 1: Install Docker and pull required images from DockerHub
-    1. To install Docker, just follow the [docker documentation](https://docs.docker.com/install/).
-    2. Start your `docker daemon`
-    3. Pull grid-node image : `docker pull srijanverma44/grid-node:v028`
-    4. Pull grid-network image : `docker pull srijanverma44/grid-network:v028`
+- Step 1: Install Docker & Docker-Compose, and pull required images from DockerHub
+    1. To install `Docker`, just follow the [docker documentation](https://docs.docker.com/get-docker/).
+    2. To install `Docker-Compose`, just follow the [docker-compose documentation](https://docs.docker.com/compose/install/).
+    3. Start your `docker daemon`
+    4. Pull grid-node image : `docker pull srijanverma44/grid-node:v028`
+    5. Pull grid-network image : `docker pull srijanverma44/grid-network:v028`
+    > Size of grid-node ~= 2GB, and that of grid-network ~= 300MB. That is, image sizes are large!
 - Step 2: Install dependencies via conda
     1. Install Miniconda, for your operating system, from [https://conda.io/miniconda.html](https://conda.io/miniconda.html)
     2. `git clone https://github.com/vermasrijan/srijan-gsoc-2020.git`
     3. `cd srijan-gsoc-2020`
     4. `conda env create -f environment.yml`
     5. `conda activate pysyft_v028` (or `source activate pysyft_v028` for older versions of conda)
-    > NOTE: Some Common Errors while creating an environment -                                                                                                                                                                                                                                                                                                                                                                                                                            
-    > 1. While creating an env. on a linux machine, you may get the following error: `No space left on device`. (refer [here](https://stackoverflow.com/questions/40755610/ioerror-errno-28-no-space-left-on-device-while-installing-tensorflow))                                                                                                                                                                                                                                                                                                                                                                                                         
-    > 2. Solution: 
-    >   - `export TMPDIR=$HOME/tmp` (i.e. change /tmp directory location)
-    >   - `mkdir -p $TMPDIR`
-    >   - `source ~/.bashrc` , and then run the following command -
-    >   - `conda env create -f environment.yml`
 - Step 3: Install [GTEx](https://gtexportal.org/home/) `V8` Dataset
     - Pull `samples` and `expressions` data:  
 ```
@@ -107,12 +104,12 @@ Options:
   --help                   Show this message and exit.
 ```
 
-### Centralized Example
+### Centralized Training
 - Example command:
 ```
 python src/initializer.py --train_type centralized --dataset_size 17000 --n_epochs 50        
 ```
-- `Centralized training` example output, using **2 epochs**:
+- `Centralized training` example output, using **50 epochs**:
 ``` 
 ============================================================
 ----<DATA PREPROCESSING STARTED..>----
@@ -131,12 +128,13 @@ OVERALL RUNTIME: 43.217 seconds
 #### DVC Centralized Stage
 `dvc repro centralized_train`
 
-### Decentralized Example
+### Decentralized Training
 - Example command:
 ```
 python src/initializer.py --train_type decentralized --dataset_size 17000 --n_epochs 50 --no_of_clients 2     
 ```
-- `Decentralized training` example output, using **2 epochs**:
+- `Decentralized training` example output, using **50 epochs**:
+> - Distributed information, like total no. of samples with each client, will be displayed first.
 ```
 ============================================================
 ----<DATA PREPROCESSING STARTED..>----
@@ -167,9 +165,7 @@ c203c2f6fd62
 ============================================================
 OVERALL RUNTIME: 380.418 seconds
 ```
-> NOTE: Some errors while training in a decentralized way:
-> - `ImportError: sys.meta_path is None, Python is likely shutting down`
-> - Solution - NOT YET RESOLVED!
+
 
 #### DVC Decentralized Stage
 `dvc repro decentralized_train`
@@ -190,17 +186,22 @@ OVERALL RUNTIME: 380.418 seconds
 
 ## Remote Execution
 > - Make sure all Firewalls are disabled on both, client and server side.
+> - Docker-compose will be required in this section.
 ### Server Side
-- abc
+- `docker-compose -f gridnetwork-compose.yml up`
+- STEP 2:
 ### Client Side
-- abc
-> - NOTE: Remote execution has not been tested properly. You
->
+- STEP 1: Configure the environment variable called `NETWORK`, and replace it with <SERVER_IP_ADDRESS>
+- STEP 2: `docker-compose -f gridnode-compose.yml up`. You can edit this compose file to add more clients, if you'd like.
+
+> - NOTE: Remote execution has not yet been tested properly.
+
 ## Running DVC stages
 - DVC stages are in `dvc.yaml` file, to run dvc stage just use `dvc repro <stage_name>`
 
 ## Notebooks
-> - 
+> - Notebooks, given in this repository, simulate decentralized training using 2 clients. 
+> - Docker-compose will be required in this section as well!
 - STEP 1: `docker-compose -f notebook-docker-compose.yml up`
 - STEP 2: `conda activate pysyft_v028` (or `source activate pysyft_v028` for older versions of conda)
 - STEP 3: Go to the following addresses: 
@@ -222,6 +223,29 @@ docker rm $(docker stop $(docker ps -a -q --filter ancestor=srijanverma44/grid-n
 
 ## Hyperparameter Optimization
 - CODE_IN_PROGRESS!
+
+## Testing
+- Test Centralized training:
+```
+dvc repro centralized_test
+```
+- Test Decentralized training:
+```
+dvc repro decentralized_test
+```
+
+## Known Issues
+1. While creating an environment:                                                                                                                                                                                                                                                                                                                                                                                                                           
+    - While creating an env. on a linux machine, you may get the following error: `No space left on device`. (refer [here](https://stackoverflow.com/questions/40755610/ioerror-errno-28-no-space-left-on-device-while-installing-tensorflow))                                                                                                                                                                                                                                                                                                                                                                                                         
+    - Solution: 
+    - `export TMPDIR=$HOME/tmp` (i.e. change /tmp directory location)
+    - `mkdir -p $TMPDIR`
+    - `source ~/.bashrc` , and then run the following command -
+    - `conda env create -f environment.yml`
+2. While training:
+    - Some errors while training in a decentralized way:
+    - `ImportError: sys.meta_path is None, Python is likely shutting down`
+    - Solution - NOT YET RESOLVED!
 
 ## Tutorials / References
 1. [OpenMined Welcome Page, high level organization and projects](https://github.com/OpenMined/OM-Welcome-Package)
