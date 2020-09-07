@@ -75,8 +75,9 @@ dvc pull data/gtex/v8_samples.parquet.dvc -v
 ```
 dvc pull data/gtex/v8_expressions.parquet.dvc -v
 ```
- - The above commands will download GTEx data inside `data/gtex` directory. 
-
+> - The above two commands will download GTEx data inside `data/gtex` directory, from Google Drive remote repository.
+> - Initially, may be prompted to enter a verification code. For that, go to the URL which may be displayed on your CLI, copy the code, paste it at CLI and press Enter. (For more info, refer [1](https://dvc.org/doc/command-reference/pull) & [2](https://dvc.org/doc/user-guide/setup-google-drive-remote))
+ 
 ## Local execution
 ### Usage
 - `src/initializer.py` is a python script for initializing either a centralized training, or a decentralized one.
@@ -88,20 +89,23 @@ dvc pull data/gtex/v8_expressions.parquet.dvc -v
 Usage: initializer.py [OPTIONS]
 
 Options:
-  --samples_path TEXT      Input path for samples
-  --expressions_path TEXT  Input for expressions
-  --train_type TEXT        Either centralized or decentralized fashion
-  --dataset_size INTEGER   Size of data for training
-  --split_type TEXT        balanced / unbalanced / iid / non_iid
-  --split_size FLOAT       Train / Test Split
-  --n_epochs INTEGER       No. of Epochs / Rounds
-  --metrics_path TEXT      Path to save metrics
-  --no_of_clients INTEGER  Clients / Nodes for decentralized training
-  --tags TEXT              Give tags for the data, which is to be sent to the nodes
-  --node_start_port TEXT   Start port No. for a node
-  --grid_address TEXT      grid address for network
-  --grid_port TEXT         grid port for network
-  --help                   Show this message and exit.
+  --samples_path TEXT       Input path for samples
+  --expressions_path TEXT   Input for expressions
+  --train_type TEXT         Either centralized or decentralized fashion
+  --dataset_size INTEGER    Size of data for training
+  --split_type TEXT         balanced / unbalanced / iid / non_iid
+  --split_size FLOAT        Train / Test Split
+  --n_epochs INTEGER        No. of Epochs / Rounds
+  --metrics_path TEXT       Path to save metrics
+  --model_save_path TEXT    Path to save trained models
+  --metrics_file_name TEXT  Custom name for metrics file
+  --no_of_clients INTEGER   Clients / Nodes for decentralized training
+  --swarm TEXT              Option for switching between docker compose vs docker stack
+  --tags TEXT               Give tags for the data, which is to be sent to the nodes
+  --node_start_port TEXT    Start port No. for a node
+  --grid_address TEXT       grid address for network
+  --grid_port TEXT          grid port for network
+  --help                    Show this message and exit.
 ```
 
 ### Centralized Training
@@ -166,7 +170,6 @@ c203c2f6fd62
 OVERALL RUNTIME: 380.418 seconds
 ```
 
-
 #### DVC Decentralized Stage
 `dvc repro decentralized_train`
 
@@ -189,7 +192,7 @@ OVERALL RUNTIME: 380.418 seconds
 > - Docker-compose will be required in this section.
 ### Server Side
 - `docker-compose -f gridnetwork-compose.yml up`
-- STEP 2:
+
 ### Client Side
 - STEP 1: Configure the environment variable called `NETWORK`, and replace it with <SERVER_IP_ADDRESS>
 - STEP 2: `docker-compose -f gridnode-compose.yml up`. You can edit this compose file to add more clients, if you'd like.
@@ -222,7 +225,10 @@ docker rm $(docker stop $(docker ps -a -q --filter ancestor=srijanverma44/grid-n
 > - Notebooks given in this repository have been taken from this [branch](https://github.com/OpenMined/PySyft/tree/master/examples/tutorials) and have been modified.
 
 ## Hyperparameter Optimization
-- CODE_IN_PROGRESS!
+```
+python src/tune.py --help
+```
+> - In Progress...
 
 ## Testing
 - Test Centralized training:
@@ -246,6 +252,8 @@ dvc repro decentralized_test
     - Some errors while training in a decentralized way:
     - `ImportError: sys.meta_path is None, Python is likely shutting down`
     - Solution - NOT YET RESOLVED!
+3. Notebooks:
+    - Data `transmission rate` (i.e, sending large-sized tensors to the nodes) may be slow. (refer [this](https://github.com/OpenMined/PySyft/issues/3539))
 
 ## Tutorials / References
 1. [OpenMined Welcome Page, high level organization and projects](https://github.com/OpenMined/OM-Welcome-Package)
