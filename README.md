@@ -264,7 +264,7 @@ dvc repro decentralized_test
 3. [Understanding PyGrid and the use of data-centric FL](https://github.com/OpenMined/Roadmap/blob/master/federated_learning/projects/data_centric_fl.md)<br/>
 4. [OpenMined RoadMap](https://github.com/OpenMined/Roadmap)<br/>
 5. [What is PyGrid demo](https://blog.openmined.org/what-is-pygrid-demo/)
-6. Iterative, DVC: Data Version Control - Git for Data & Models (2020) DOI:10.5281/zenodo.012345.
+6. Iterative, DVC: Data Version Control - Git for Data & Models (2020) [DOI:10.5281/zenodo.012345](https://doi.org/10.5281/zenodo.3677553).
 7. [iterative.ai](https://iterative.ai/)
 8. [DVC Tutorials](https://dvc.org/doc/start)
 
