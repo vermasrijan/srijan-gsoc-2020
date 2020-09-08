@@ -261,10 +261,12 @@ dvc repro decentralized_test
 ## Tutorials / References
 1. [OpenMined Welcome Page, high level organization and projects](https://github.com/OpenMined/OM-Welcome-Package)
 2. [OpenMined full stack, well explained](https://www.youtube.com/watch?v=NJBBE_SN90A)<br/>
-3. [Understanding PyGrid and the use of dynamic FL](https://github.com/OpenMined/Roadmap/blob/master/web_and_mobile_team/projects/dynamic_federated_learning.md)<br/>
-4. [PyGrid reorganization RoadMap](https://github.com/OpenMined/Roadmap/blob/master/web_and_mobile_team/projects/common/pygrid_reorganization.md)<br/>
-5. [OpenMined FL roadmap and other terminologies](https://github.com/OpenMined/Roadmap/blob/master/web_and_mobile_team/projects/federated_learning.md)
-6. [What is PyGrid demo](https://blog.openmined.org/what-is-pygrid-demo/)
+3. [Understanding PyGrid and the use of data-centric FL](https://github.com/OpenMined/Roadmap/blob/master/federated_learning/projects/data_centric_fl.md)<br/>
+4. [OpenMined RoadMap](https://github.com/OpenMined/Roadmap)<br/>
+5. [What is PyGrid demo](https://blog.openmined.org/what-is-pygrid-demo/)
+6. Iterative, DVC: Data Version Control - Git for Data & Models (2020) DOI:10.5281/zenodo.012345.
+7. [iterative.ai](https://iterative.ai/)
+8. [DVC Tutorials](https://dvc.org/doc/start)
 
 ## Project Status
 **Under Development:** Please note that the project is in its early development stage and all the features have not been tested yet.
@@ -274,10 +276,10 @@ dvc repro decentralized_test
 
 2. [Open Bioinformatics Foundation](https://www.open-bio.org/) admins, helpdesk and the whole community <br/>
 
-3. [OpenMined Community](https://www.openmined.org/), for their constant help throughout!
+3. [OpenMined Community](https://www.openmined.org/), for putting together such a beautiful tech stack and for their constant help throughout!
 
-4. [Systems Biology of Aging Group](http://www.aging-research.group/) <br/>
+4. [Systems Biology of Aging Group](http://www.aging-research.group/), for providing me with useful resources, for trusting me throughout and for their constant feedback!<br/>
 
-5. [Iterative.ai](https://iterative.ai/) and [DVC](https://dvc.org/) <br/>
+5. [Iterative.ai](https://iterative.ai/) and [DVC](https://dvc.org/), for making all of our lives so much more easier now :)<br/>
 
-6. [GSoC](https://summerofcode.withgoogle.com/) organizers, managers and Google 
+6. [GSoC](https://summerofcode.withgoogle.com/) organizers, managers and Google.
