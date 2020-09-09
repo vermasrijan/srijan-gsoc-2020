@@ -63,7 +63,8 @@
     3. Start your `docker daemon`
     4. Pull grid-node image : `docker pull srijanverma44/grid-node:v028`
     5. Pull grid-network image : `docker pull srijanverma44/grid-network:v028`
-    > Size of grid-node ~= 2GB, and that of grid-network ~= 300MB. That is, image sizes are large!
+    > - Image size of grid-node ~= 2GB, and that of grid-network ~= 300MB. That is, image sizes are large!
+    > - NOTE: These images have been taken from [OpenMined Stack](https://hub.docker.com/u/openmined). Refer [PySyft](https://github.com/OpenMined/PySyft) & [PyGrid](https://github.com/OpenMined/PyGrid) repositories for more details!
 - Step 2: Install dependencies via conda
     1. Install Miniconda, for your operating system, from [https://conda.io/miniconda.html](https://conda.io/miniconda.html)
     2. `git clone https://github.com/vermasrijan/srijan-gsoc-2020.git`
@@ -201,6 +202,7 @@ OVERALL RUNTIME: 380.418 seconds
 - STEP 2: `docker-compose -f gridnode-compose.yml up`. You can edit this compose file to add more clients, if you'd like.
 
 > - NOTE: Remote execution has not yet been tested properly.
+> - In Progress...
 
 ## Running DVC stages
 - DVC stages are in `dvc.yaml` file, to run dvc stage just use `dvc repro <stage_name>`
