@@ -5,6 +5,7 @@ from training import Centralized, Decentralized
 import warnings
 import numpy as np
 import sys
+import pandas as pd
 warnings.simplefilter("ignore", UserWarning)
 warnings.simplefilter("ignore", FutureWarning)
 warnings.simplefilter("ignore", DeprecationWarning)
@@ -28,9 +29,10 @@ import click
 @click.option('--node_start_port', default='3000', help="Start port No. for a node")
 @click.option('--grid_address', default='0.0.0.0', help="grid address for network")
 @click.option('--grid_port', default='5000', help="grid port for network")
+@click.option('--custom_gene_path', default=None, help="Custom genes to take")
 
 
-def main(samples_path, expressions_path, train_type, dataset_size, no_of_clients, grid_port, grid_address, metrics_path, n_epochs, split_type, metrics_file_name, swarm, no_cuda, model_save_path, split_size, node_start_port, tags):
+def main(samples_path, expressions_path, train_type, dataset_size, no_of_clients, grid_port, grid_address, metrics_path, n_epochs, split_type, metrics_file_name, swarm, no_cuda, model_save_path, split_size, node_start_port, tags, custom_gene_path):
 
     print('='*60)
 
@@ -45,9 +47,16 @@ def main(samples_path, expressions_path, train_type, dataset_size, no_of_clients
         start_time = time.time()
 
         print('----<DATA PREPROCESSING STARTED..>----')
+
+        genes_to_take, custom_genes_bool = None, False
+        if custom_gene_path is not None:
+            print('----<DROPPING SELECTED GENES..>----')
+            genes_to_take, custom_genes_bool = pd.read_csv(custom_gene_path)['ids'].tolist(), True
+
         # Using class Genes
         genes = Genes(samples_path, expressions_path, problem_type="classification")
-        X = genes.get_features_dataframe().values
+        X = genes.get_features_dataframe(custom_genes = custom_genes_bool, custom_genes_list = genes_to_take).values
+        print('FEATURE SIZE : {}'.format(X.shape))
         Y = genes.Y
         transformed_genes = genes.transform_to_interval(Y)
 
