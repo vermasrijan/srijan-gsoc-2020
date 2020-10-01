@@ -101,14 +101,28 @@ class Genes:
 
         return normalize(x, axis=0) if normalize_expressions else x
 
-    def get_features_dataframe(self, add_tissues=True):
+    def get_custom_genes(self, DF=None, custom_genes_list=None):
+
+        drop_list = []
+        all_cols = DF.columns.to_list()
+        custom_genes_set = set(custom_genes_list)
+        for gene in all_cols:
+            if ('ENSG' in gene) and (gene not in custom_genes_set):
+                drop_list.append(gene)
+
+        DF.drop(drop_list, axis=1, inplace=True)
+        return DF
+
+    def get_features_dataframe(self, add_tissues=True, custom_genes=False, custom_genes_list=None):
         data = self.samples.join(self.expressions, on="Name", how="inner")
         ji = data.columns.drop(self.drop_list)
         df = data[ji]
         if add_tissues:
-            df = pd.concat(
-                [df, pd.get_dummies(data['Tissue'], prefix='tissue'), pd.get_dummies(data['Sex'], prefix='sex')],
-                axis=1)
+            df = pd.concat([df, pd.get_dummies(data['Tissue'], prefix='tissue'), pd.get_dummies(data['Sex'], prefix='sex')], axis=1)
+
+        if custom_genes:
+            df = self.get_custom_genes(DF=df, custom_genes_list=custom_genes_list)
+
         x = df.values
         min_max_scaler = MinMaxScaler()
         x_scaled = min_max_scaler.fit_transform(x)
